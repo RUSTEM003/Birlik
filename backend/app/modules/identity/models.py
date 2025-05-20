@@ -10,7 +10,7 @@ class NFTPassport(Base):
     owner_id = Column(Integer, ForeignKey("users.id"))
     nft_token_id = Column(String, unique=True)
     passport_type = Column(String)  # "citizen", "government", "corporation", "international"
-    metadata = Column(JSON)
+    passport_metadata = Column(JSON)
     ipfs_hash = Column(String)
     is_active = Column(Boolean, default=True)
     issued_at = Column(DateTime, default=datetime.utcnow)

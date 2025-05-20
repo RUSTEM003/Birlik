@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from datetime import timedelta
 from typing import Any
 
@@ -16,7 +17,7 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 @router.post("/login", response_model=Token)
 async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
-    db: Session = Depends(get_db)
+    db: AsyncSession = Depends(get_db)
 ) -> Any:
     user = await authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -34,15 +35,17 @@ async def login_for_access_token(
 @router.post("/register", response_model=UserResponse)
 async def register_user(
     user_in: UserCreate,
-    db: Session = Depends(get_db)
+    db: AsyncSession = Depends(get_db)
 ) -> Any:
-    user = await db.query(User).filter(User.username == user_in.username).first()
+    result = await db.execute(select(User).where(User.username == user_in.username))
+    user = result.scalar_one_or_none()
     if user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Username already registered",
         )
-    user = await db.query(User).filter(User.email == user_in.email).first()
+    result = await db.execute(select(User).where(User.email == user_in.email))
+    user = result.scalar_one_or_none()
     if user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

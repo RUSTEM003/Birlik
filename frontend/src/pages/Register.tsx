@@ -39,11 +39,11 @@ export default function Register() {
   });
   
   const mutation = useMutation({
-    mutationFn: (userData: Omit<FormValues, "confirmPassword">) => {
+    mutationFn: (userData: FormValues) => {
       const { confirmPassword, ...rest } = userData;
       return registerUser(rest);
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       navigate("/login");
     },
     onError: (error: any) => {

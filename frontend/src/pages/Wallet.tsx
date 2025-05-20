@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+
 import { getBalance, getWalletAddress } from "../services/web3";
 
 export default function Wallet() {
@@ -72,7 +72,7 @@ export default function Wallet() {
         </div>
         
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Fiat & CBDC Balances</h2>
+          <h2 className="text-xl font-semibold mb-4">Fiat &amp; CBDC Balances</h2>
           
           <div className="space-y-4">
             <div className="flex justify-between items-center p-3 border border-gray-200 rounded-md">

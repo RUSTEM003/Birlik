@@ -18,7 +18,15 @@ api.interceptors.request.use((config) => {
 });
 
 export const login = async (credentials: { username: string; password: string }) => {
-  const response = await api.post("/api/auth/login", credentials);
+  const params = new URLSearchParams();
+  params.append("username", credentials.username);
+  params.append("password", credentials.password);
+  
+  const response = await api.post("/api/auth/login", params, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  });
   return response.data;
 };
 
@@ -49,7 +57,7 @@ export const getUserTransfers = async () => {
 
 export const createNFTPassport = async (passportData: {
   passport_type: string;
-  metadata: Record<string, any>;
+  passport_metadata: Record<string, any>;
 }) => {
   const response = await api.post("/api/identity/passport", passportData);
   return response.data;

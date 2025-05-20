@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useQuery } from "@tanstack/react-query";
 import { getUserTransfers } from "../services/api";
 
@@ -55,7 +55,7 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {transactions.slice(0, 5).map((tx) => (
+                {transactions.slice(0, 5).map((tx: any) => (
                   <tr key={tx.id}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {new Date(tx.created_at).toLocaleDateString()}

@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     
     IPFS_PROJECT_ID: Optional[str] = None
     IPFS_PROJECT_SECRET: Optional[str] = None
+    WEB3_STORAGE_API_KEY: Optional[str] = None
+    IPFS_GATEWAY: Optional[str] = "https://ipfs.io/ipfs"
     
     BIRLIK_LIVE_API_KEY: Optional[str] = None
     BIRLIK_LIVE_API_SECRET: Optional[str] = None

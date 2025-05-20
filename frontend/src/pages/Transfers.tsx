@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useQuery } from "@tanstack/react-query";
 import { getUserTransfers } from "../services/api";
 import TransferForm from "../components/transfers/TransferForm";
@@ -74,7 +74,7 @@ export default function Transfers() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {transactions.map((tx) => (
+                {transactions.map((tx: any) => (
                   <tr key={tx.id}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {new Date(tx.created_at).toLocaleDateString()}
