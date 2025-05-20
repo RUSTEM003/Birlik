@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
-export type Language = 'en' | 'ru';
+export type Language = 'en' | 'ru' | 'kk';
 
 export const translations = {
   en: {
@@ -84,6 +84,7 @@ export const translations = {
     language: 'Language',
     english: 'English',
     russian: 'Russian',
+    kazakh: 'Kazakh',
     
     birlikLiveIntegration: 'Birlik Live Integration',
     connectToBirlikLive: 'Connect to Birlik Live',
@@ -179,6 +180,7 @@ export const translations = {
     language: 'Язык',
     english: 'Английский',
     russian: 'Русский',
+    kazakh: 'Казахский',
     
     birlikLiveIntegration: 'Интеграция с Birlik Live',
     connectToBirlikLive: 'Подключиться к Birlik Live',
@@ -192,6 +194,102 @@ export const translations = {
     marketplaceDescription: 'Покупка и продажа товаров и услуг',
     socialNetwork: 'Социальная сеть',
     socialNetworkDescription: 'Общение с другими пользователями',
+  },
+  kk: {
+    loading: 'Жүктелуде...',
+    welcome: 'Birlik Digital Bank-ке қош келдіңіз',
+    
+    dashboard: 'Басқару тақтасы',
+    transfers: 'Аударымдар',
+    wallet: 'Әмиян',
+    identity: 'Сәйкестендіру',
+    governance: 'Басқару',
+    profile: 'Профиль',
+    logout: 'Шығу',
+    
+    login: 'Кіру',
+    register: 'Тіркелу',
+    username: 'Пайдаланушы аты',
+    email: 'Электрондық пошта',
+    password: 'Құпия сөз',
+    confirmPassword: 'Құпия сөзді растаңыз',
+    fullName: 'Толық аты-жөні',
+    createAccount: 'Тіркелгі жасау',
+    alreadyHaveAccount: 'Тіркелгіңіз бар ма?',
+    signIn: 'Кіру',
+    dontHaveAccount: 'Тіркелгіңіз жоқ па?',
+    signUp: 'Тіркелу',
+    
+    totalTransfers: 'Барлық аударымдар',
+    cbdcBalance: 'CBDC балансы',
+    fiatBalance: 'Фиат балансы',
+    recentTransactions: 'Соңғы транзакциялар',
+    date: 'Күні',
+    recipient: 'Алушы',
+    amount: 'Сома',
+    status: 'Күйі',
+    noTransactionsFound: 'Транзакциялар табылмады.',
+    
+    crossBorderTransfers: 'Трансшекаралық аударымдар',
+    transferFeatures: 'Аударым мүмкіндіктері',
+    swiftIndependent: 'SWIFT-тәуелсіз аударымдар',
+    multiCurrency: 'Көп валюталы қолдау (Фиат, CBDC, Крипто)',
+    instantSettlement: 'Жылдам есеп айырысу (3-5 секунд)',
+    lowFees: 'Төмен комиссиялар (0.1-0.3%)',
+    blockchainVerification: 'Блокчейн арқылы тексеру',
+    crossBorderSupport: 'ТМД және Азия үшін трансшекаралық қолдау',
+    transactionHistory: 'Транзакция тарихы',
+    blockchainTx: 'Блокчейн TX',
+    view: 'Қарау',
+    
+    multiCurrencyWallet: 'Көп валюталы әмиян',
+    walletInformation: 'Әмиян туралы ақпарат',
+    walletAddress: 'Әмиян мекенжайы',
+    notConnected: 'Қосылмаған',
+    ethBalance: 'ETH балансы',
+    refreshBalance: 'Балансты жаңарту',
+    noWeb3Wallet: 'Web3 әмияны табылмады',
+    installMetaMask: 'Бұл мүмкіндікті пайдалану үшін MetaMask немесе басқа Web3 әмиянын орнатыңыз',
+    fiatCbdcBalances: 'Фиат және CBDC баланстары',
+    walletFeatures: 'Әмиян мүмкіндіктері',
+    
+    nftPassport: 'NFT паспорты',
+    createPassport: 'Паспорт жасау',
+    verifyIdentity: 'Жеке басты растау',
+    passportDetails: 'Паспорт мәліметтері',
+    passportType: 'Паспорт түрі',
+    nationality: 'Азаматтығы',
+    dateOfBirth: 'Туған күні',
+    issuedAt: 'Берілген күні',
+    expiresAt: 'Жарамдылық мерзімі',
+    
+    daoGovernance: 'DAO басқару',
+    activeProposals: 'Белсенді ұсыныстар',
+    pastProposals: 'Өткен ұсыныстар',
+    createProposal: 'Ұсыныс жасау',
+    proposalTitle: 'Ұсыныс атауы',
+    proposalDescription: 'Ұсыныс сипаттамасы',
+    votingPeriod: 'Дауыс беру кезеңі',
+    voteFor: 'Қолдау',
+    voteAgainst: 'Қарсы дауыс',
+    
+    language: 'Тіл',
+    english: 'Ағылшын',
+    russian: 'Орыс',
+    kazakh: 'Қазақ',
+    
+    birlikLiveIntegration: 'Birlik Live интеграциясы',
+    connectToBirlikLive: 'Birlik Live-ке қосылу',
+    birlikLiveFeatures: 'Birlik Live мүмкіндіктері',
+    connectedToBirlikLive: 'Birlik Live-ке қосылды',
+    connecting: 'Қосылуда...',
+    birlikLiveServices: 'Birlik Live қызметтері',
+    maps: 'Карталар',
+    mapsDescription: 'Интерактивті карталар және орналасу қызметтері',
+    marketplace: 'Маркетплейс',
+    marketplaceDescription: 'Тауарлар мен қызметтерді сатып алу және сату',
+    socialNetwork: 'Әлеуметтік желі',
+    socialNetworkDescription: 'Басқа пайдаланушылармен байланыс',
   }
 };
 
@@ -217,7 +315,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   };
 
   const t = (key: keyof typeof translations.en): string => {
-    return translations[language][key] || translations.en[key] || key;
+    return (translations[language] && translations[language][key]) || translations.en[key] || key;
   };
 
   return (
