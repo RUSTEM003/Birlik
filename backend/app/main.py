@@ -17,7 +17,7 @@ app = FastAPI(
 # Disable CORS. Do not remove this for full-stack development.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
+    allow_origins=["https://banking-model-app-eu9uqcyb.devinapps.com", "http://localhost:5173"],  # Frontend domains
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
