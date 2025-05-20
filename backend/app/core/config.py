@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     IPFS_PROJECT_ID: Optional[str] = None
     IPFS_PROJECT_SECRET: Optional[str] = None
     
+    BIRLIK_LIVE_API_KEY: Optional[str] = None
+    BIRLIK_LIVE_API_SECRET: Optional[str] = None
+    BIRLIK_LIVE_BASE_URL: str = "https://birlik-live.onrender.com/api"
+    
     class Config:
         env_file = ".env"
         case_sensitive = True
