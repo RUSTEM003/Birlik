@@ -1,8 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import asyncio
 from app.core.config import settings
 from app.modules.dfmi.router import router as dfmi_router
 from app.modules.auth.router import router as auth_router
+from app.modules.identity.router import router as identity_router
+from app.integrations.birlik_live.webhooks import router as birlik_live_webhooks_router
+from app.database import engine, Base
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -20,6 +24,14 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(dfmi_router)
+app.include_router(identity_router)
+app.include_router(birlik_live_webhooks_router)
+
+@app.on_event("startup")
+async def startup():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    print("Database tables created")
 
 @app.get("/")
 async def root():

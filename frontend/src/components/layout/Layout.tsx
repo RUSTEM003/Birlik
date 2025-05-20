@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate, Link } from "react-router-dom";
+import { useLanguage } from "../../contexts/LanguageContext";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Layout() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -38,7 +41,7 @@ export default function Layout() {
                 to="/"
                 className="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
               >
-                <span className="ml-2">Dashboard</span>
+                <span className="ml-2">{t('dashboard')}</span>
               </Link>
             </li>
             <li>
@@ -46,7 +49,7 @@ export default function Layout() {
                 to="/transfers"
                 className="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
               >
-                <span className="ml-2">Transfers</span>
+                <span className="ml-2">{t('transfers')}</span>
               </Link>
             </li>
             <li>
@@ -54,7 +57,7 @@ export default function Layout() {
                 to="/wallet"
                 className="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
               >
-                <span className="ml-2">Wallet</span>
+                <span className="ml-2">{t('wallet')}</span>
               </Link>
             </li>
             <li>
@@ -62,7 +65,7 @@ export default function Layout() {
                 to="/identity"
                 className="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
               >
-                <span className="ml-2">Identity</span>
+                <span className="ml-2">{t('identity')}</span>
               </Link>
             </li>
             <li>
@@ -70,11 +73,23 @@ export default function Layout() {
                 to="/governance"
                 className="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
               >
-                <span className="ml-2">Governance</span>
+                <span className="ml-2">{t('governance')}</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/birlik-live"
+                className="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+              >
+                <span className="ml-2">{t('birlikLiveIntegration')}</span>
               </Link>
             </li>
           </ul>
         </nav>
+        
+        <div className="mt-auto p-4 border-t">
+          <LanguageSwitcher />
+        </div>
       </div>
 
       {/* Main Content */}
@@ -82,13 +97,15 @@ export default function Layout() {
         {/* Header */}
         <header className="bg-white shadow-sm">
           <div className="flex justify-between items-center px-6 py-4">
-            <h2 className="text-xl font-semibold text-gray-800">Birlik Digital Bank</h2>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
-            >
-              Logout
-            </button>
+            <h2 className="text-xl font-semibold text-gray-800">{t('welcome')}</h2>
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
+              >
+                {t('logout')}
+              </button>
+            </div>
           </div>
         </header>
 
