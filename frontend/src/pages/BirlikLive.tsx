@@ -10,7 +10,7 @@ export default function BirlikLive() {
     password: "",
   });
   
-  const { data: status, isLoading: isStatusLoading, refetch: refetchStatus } = useQuery({
+  const { data: status, refetch: refetchStatus } = useQuery({
     queryKey: ["birlikLiveStatus"],
     queryFn: getBirlikLiveStatus,
   });
