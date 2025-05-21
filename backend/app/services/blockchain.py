@@ -4,6 +4,7 @@ import json
 import logging
 import random
 from typing import Dict, Any, Optional
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -50,17 +51,29 @@ async def verify_transaction(tx_hash):
         logger.error(f"Verification error: {str(e)}")
         return {"success": False, "error": str(e)}
 
-async def generate_nft_token(owner_address: str, metadata: Dict[str, Any]) -> str:
+async def generate_nft_token(owner_address: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Generate an NFT token ID for a passport.
+    Generate an NFT token ID for a passport with enhanced verification.
     In a real implementation, this would interact with a blockchain.
-    For now, we'll just generate a mock token ID.
+    For now, we'll generate a mock token with more comprehensive data.
     """
-    logger.info(f"Generating NFT token for {owner_address}")
-    token_id = f"nft-{random.randint(1000, 9999)}-{owner_address[:8] if owner_address else 'default'}"
+    logger.info(f"Generating enhanced NFT token for {owner_address}")
     
-    logger.info(f"Generated token ID: {token_id}")
-    return token_id
+    token_id = f"gde-nft-{random.randint(10000, 99999)}-{owner_address[:8] if owner_address else 'default'}"
+    
+    verification_data = {
+        "token_id": token_id,
+        "owner": owner_address,
+        "metadata": metadata,
+        "blockchain_verified": True,
+        "global_status": "verified",
+        "regional_status": "pending",
+        "national_status": "pending",
+        "timestamp": datetime.utcnow().isoformat()
+    }
+    
+    logger.info(f"Generated enhanced token: {verification_data}")
+    return verification_data
 
 async def verify_nft_token(token_id: str) -> bool:
     """

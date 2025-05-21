@@ -17,6 +17,10 @@ class NFTPassportResponse(NFTPassportBase):
     nft_token_id: str
     passport_metadata: Dict[str, Any]
     ipfs_hash: Optional[str] = None
+    blockchain_verified: bool
+    global_status: str
+    regional_status: str
+    national_status: str
     is_active: bool
     issued_at: datetime
     expires_at: Optional[datetime] = None

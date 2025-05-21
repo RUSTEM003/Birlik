@@ -12,6 +12,10 @@ class NFTPassport(Base):
     passport_type = Column(String)  # "citizen", "government", "corporation", "international"
     passport_metadata = Column(JSON)
     ipfs_hash = Column(String)
+    blockchain_verified = Column(Boolean, default=False)
+    global_status = Column(String, default="pending")  # "pending", "verified", "rejected"
+    regional_status = Column(String, default="pending")  # "pending", "verified", "rejected"
+    national_status = Column(String, default="pending")  # "pending", "verified", "rejected"
     is_active = Column(Boolean, default=True)
     issued_at = Column(DateTime, default=datetime.utcnow)
     expires_at = Column(DateTime, nullable=True)
@@ -28,5 +32,9 @@ class User(Base):
     full_name = Column(String)
     is_active = Column(Boolean, default=True)
     wallet_address = Column(String, nullable=True)
+    global_citizen_id = Column(String, unique=True, nullable=True)
+    national_center_id = Column(Integer, ForeignKey("national_centers.id"))
+    preferred_language = Column(String, default="en")  # "en", "ru", "kk"
     
     passport = relationship("NFTPassport", back_populates="owner")
+    national_center = relationship("NationalCenter", back_populates="users")

@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings
-from typing import Optional
+from typing import Optional, List
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Birlik Digital Bank API"
@@ -21,6 +21,10 @@ class Settings(BaseSettings):
     BIRLIK_LIVE_API_KEY: Optional[str] = None
     BIRLIK_LIVE_API_SECRET: Optional[str] = None
     BIRLIK_LIVE_BASE_URL: str = "https://birlik-live.onrender.com/api"
+    
+    GLOBAL_CENTER_ID: str = "GCDT"
+    REGIONAL_CENTERS: List[str] = ["Asia", "Europe", "America", "Africa", "AustraliaOceania"]
+    DEFAULT_REGION: str = "Asia"
     
     class Config:
         env_file = ".env"
