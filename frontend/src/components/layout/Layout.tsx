@@ -115,8 +115,18 @@ export default function Layout() {
         </header>
 
         {/* Page Content */}
-        <main className="p-6 bg-kazakh-pattern bg-opacity-5">
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg p-6 border border-kazakh-gold/20">
+        <main className="p-6 bg-kazakh-pattern bg-opacity-5 relative">
+          {/* Centered Kazakh Emblem and Ornaments */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="bg-kazakh-emblem bg-contain bg-no-repeat bg-center w-80 h-80 opacity-25 animate-ornament-pulse"></div>
+          </div>
+          <div className="absolute inset-x-0 top-0 flex justify-center pointer-events-none">
+            <div className="bg-kazakh-ornament bg-contain bg-no-repeat bg-center w-full h-32 opacity-30 animate-ornament-pulse"></div>
+          </div>
+          <div className="absolute inset-x-0 bottom-0 flex justify-center pointer-events-none">
+            <div className="bg-kazakh-ornament bg-contain bg-no-repeat bg-center w-full h-32 opacity-30 animate-ornament-pulse"></div>
+          </div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg p-6 border border-kazakh-gold/20 relative z-10">
             <Outlet />
           </div>
         </main>

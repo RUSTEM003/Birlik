@@ -44,17 +44,32 @@ export default function Login() {
   }
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-kazakh-blue via-kazakh-light to-kazakh-gold">
-      <div className="max-w-md w-full p-8 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg border border-kazakh-gold/30 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-kazakh-blue via-kazakh-light to-kazakh-gold relative">
+      {/* Large centered background emblem */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="bg-kazakh-emblem bg-contain bg-no-repeat bg-center w-96 h-96 opacity-20 animate-ornament-pulse"></div>
+      </div>
+      
+      {/* Top ornament */}
+      <div className="absolute inset-x-0 top-0 flex justify-center pointer-events-none">
+        <div className="bg-kazakh-ornament bg-contain bg-no-repeat bg-center w-full h-32 opacity-30 animate-ornament-pulse"></div>
+      </div>
+      
+      {/* Bottom ornament */}
+      <div className="absolute inset-x-0 bottom-0 flex justify-center pointer-events-none">
+        <div className="bg-kazakh-ornament bg-contain bg-no-repeat bg-center w-full h-32 opacity-30 animate-ornament-pulse"></div>
+      </div>
+      
+      <div className="max-w-md w-full p-8 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg border border-kazakh-gold/30 relative overflow-hidden z-10">
         {/* Background ornament */}
-        <div className="absolute inset-0 bg-kazakh-pattern opacity-5"></div>
+        <div className="absolute inset-0 bg-kazakh-pattern opacity-10"></div>
         
         {/* Emblem */}
-        <div className="absolute top-0 right-0 bg-kazakh-emblem bg-contain bg-no-repeat w-24 h-24 opacity-20"></div>
+        <div className="absolute top-0 right-0 bg-kazakh-emblem bg-contain bg-no-repeat w-24 h-24 opacity-30"></div>
         
         <div className="relative z-10">
           <div className="text-center mb-8 flex flex-col items-center">
-            <div className="bg-kazakh-emblem bg-contain bg-no-repeat bg-center w-16 h-16 mb-2"></div>
+            <div className="bg-kazakh-emblem bg-contain bg-no-repeat bg-center w-24 h-24 mb-2 animate-ornament-pulse"></div>
             <h1 className="text-3xl font-bold text-kazakh-darkBlue">Birlik Digital Bank</h1>
             <p className="text-kazakh-blue mt-2">{t('signInToAccount')}</p>
           </div>
