@@ -67,3 +67,64 @@ export const getUserPassport = async () => {
   const response = await api.get("/api/identity/passport");
   return response.data;
 };
+
+export const getRegionalCenters = async () => {
+  const response = await api.get("/api/centers/regional");
+  return response.data;
+};
+
+export const createRegionalCenter = async (centerData: {
+  code: string;
+  name: string;
+  description?: string;
+}) => {
+  const response = await api.post("/api/centers/regional", centerData);
+  return response.data;
+};
+
+export const getNationalCenters = async () => {
+  const response = await api.get("/api/centers/national");
+  return response.data;
+};
+
+export const createNationalCenter = async (centerData: {
+  code: string;
+  name: string;
+  description?: string;
+  regional_center_id: number;
+  currency_code: string;
+  language_codes: string[];
+}) => {
+  const response = await api.post("/api/centers/national", centerData);
+  return response.data;
+};
+
+export const getExchanges = async () => {
+  const response = await api.get("/api/exchanges");
+  return response.data;
+};
+
+export const createExchange = async (exchangeData: {
+  name: string;
+  code: string;
+  type: string;
+  supported_currencies: string[];
+}) => {
+  const response = await api.post("/api/exchanges", exchangeData);
+  return response.data;
+};
+
+export const getExchangeRates = async (exchangeId: number) => {
+  const response = await api.get(`/api/exchanges/rates/${exchangeId}`);
+  return response.data;
+};
+
+export const createExchangeRate = async (rateData: {
+  exchange_id: number;
+  from_currency: string;
+  to_currency: string;
+  rate: number;
+}) => {
+  const response = await api.post("/api/exchanges/rates", rateData);
+  return response.data;
+};
