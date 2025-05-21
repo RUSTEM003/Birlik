@@ -11,7 +11,7 @@ const RegionalCentersList: React.FC = () => {
   });
 
   if (isLoading) return <div className="p-4">{t('loading')}</div>;
-  if (error) return <div className="p-4 text-red-500">Error loading regional centers</div>;
+  if (error) return <div className="p-4 text-red-500">{t('errorLoadingRegionalCenters')}</div>;
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">

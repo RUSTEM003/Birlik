@@ -150,6 +150,10 @@ export const translations = {
     notVerified: 'Not verified',
     noGlobalCitizenID: 'No Global Citizen ID found.',
     createGlobalCitizenID: 'Create Global Citizen ID',
+    errorLoadingRegionalCenters: 'Error loading regional centers',
+    errorLoadingNationalCenters: 'Error loading national centers',
+    selectExchange: 'Select Exchange',
+    timestamp: 'Timestamp',
   },
   ru: {
     loading: 'Загрузка...',
@@ -298,6 +302,10 @@ export const translations = {
     notVerified: 'Не подтверждено',
     noGlobalCitizenID: 'Глобальный ID гражданина не найден.',
     createGlobalCitizenID: 'Создать Глобальный ID гражданина',
+    errorLoadingRegionalCenters: 'Ошибка загрузки региональных центров',
+    errorLoadingNationalCenters: 'Ошибка загрузки национальных центров',
+    selectExchange: 'Выбрать биржу',
+    timestamp: 'Временная метка',
   },
   kk: {
     loading: 'Жүктелуде...',
@@ -446,6 +454,10 @@ export const translations = {
     notVerified: 'Тексерілмеген',
     noGlobalCitizenID: 'Жаһандық азаматтық ID табылмады.',
     createGlobalCitizenID: 'Жаһандық азаматтық ID жасау',
+    errorLoadingRegionalCenters: 'Аймақтық орталықтарды жүктеу қатесі',
+    errorLoadingNationalCenters: 'Ұлттық орталықтарды жүктеу қатесі',
+    selectExchange: 'Биржаны таңдаңыз',
+    timestamp: 'Уақыт белгісі'
   }
 };
 

@@ -10,6 +10,7 @@ const Wallet = lazy(() => import("./pages/Wallet"));
 const Identity = lazy(() => import("./pages/Identity"));
 const Governance = lazy(() => import("./pages/Governance"));
 const BirlikLive = lazy(() => import("./pages/BirlikLive"));
+const GlobalEconomy = lazy(() => import("./pages/GlobalEconomy"));
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const Layout = lazy(() => import("./components/layout/Layout"));
@@ -32,6 +33,7 @@ function App() {
                 <Route path="identity" element={<Identity />} />
                 <Route path="governance" element={<Governance />} />
                 <Route path="birlik-live" element={<BirlikLive />} />
+                <Route path="global-economy" element={<GlobalEconomy />} />
               </Route>
             </Routes>
           </Suspense>

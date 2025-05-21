@@ -1,0 +1,15 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="kazakh-pattern" patternUnits="userSpaceOnUse" width="100" height="100">
+      <path d="M0,0 L20,0 L20,20 L0,20 Z" fill="none" stroke="#D4A017" stroke-width="1"/>
+      <path d="M5,5 C10,0 15,0 20,5 C25,10 25,15 20,20 C15,25 10,25 5,20 C0,15 0,10 5,5 Z" fill="none" stroke="#D4A017" stroke-width="1"/>
+      <path d="M25,0 L45,0 L45,20 L25,20 Z" fill="none" stroke="#D4A017" stroke-width="1"/>
+      <path d="M30,5 C35,0 40,0 45,5 C50,10 50,15 45,20 C40,25 35,25 30,20 C25,15 25,10 30,5 Z" fill="none" stroke="#D4A017" stroke-width="1"/>
+      <path d="M50,0 L70,0 L70,20 L50,20 Z" fill="none" stroke="#D4A017" stroke-width="1"/>
+      <path d="M55,5 C60,0 65,0 70,5 C75,10 75,15 70,20 C65,25 60,25 55,20 C50,15 50,10 55,5 Z" fill="none" stroke="#D4A017" stroke-width="1"/>
+      <path d="M75,0 L95,0 L95,20 L75,20 Z" fill="none" stroke="#D4A017" stroke-width="1"/>
+      <path d="M80,5 C85,0 90,0 95,5 C100,10 100,15 95,20 C90,25 85,25 80,20 C75,15 75,10 80,5 Z" fill="none" stroke="#D4A017" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="100" height="100" fill="url(#kazakh-pattern)"/>
+</svg>

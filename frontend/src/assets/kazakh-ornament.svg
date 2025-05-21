@@ -1,0 +1,7 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <path d="M50,10 C70,10 90,30 90,50 C90,70 70,90 50,90 C30,90 10,70 10,50 C10,30 30,10 50,10 Z" fill="none" stroke="#D4A017" stroke-width="2"/>
+  <path d="M50,20 C65,20 80,35 80,50 C80,65 65,80 50,80 C35,80 20,65 20,50 C20,35 35,20 50,20 Z" fill="none" stroke="#D4A017" stroke-width="2"/>
+  <path d="M30,50 C30,40 40,30 50,30 C60,30 70,40 70,50 C70,60 60,70 50,70 C40,70 30,60 30,50 Z" fill="none" stroke="#D4A017" stroke-width="2"/>
+  <path d="M10,50 L30,50 M70,50 L90,50 M50,10 L50,30 M50,70 L50,90" stroke="#D4A017" stroke-width="2"/>
+  <path d="M25,25 L40,40 M60,40 L75,25 M25,75 L40,60 M60,60 L75,75" stroke="#D4A017" stroke-width="2"/>
+</svg>

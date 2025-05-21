@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../services/api";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const formSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -16,6 +17,7 @@ type FormValues = z.infer<typeof formSchema>;
 export default function Login() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const { t } = useLanguage();
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -32,7 +34,7 @@ export default function Login() {
       navigate("/");
     },
     onError: (error: any) => {
-      setError(error.response?.data?.detail || "Login failed. Please check your credentials.");
+      setError(error.response?.data?.detail || t('loginFailed'));
     },
   });
   
@@ -42,85 +44,98 @@ export default function Login() {
   }
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-md w-full p-8 bg-white rounded-lg shadow-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-600">Birlik Digital Bank</h1>
-          <p className="text-gray-600 mt-2">Sign in to your account</p>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-kazakh-blue via-kazakh-light to-kazakh-gold">
+      <div className="max-w-md w-full p-8 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg border border-kazakh-gold/30 relative overflow-hidden">
+        {/* Background ornament */}
+        <div className="absolute inset-0 bg-kazakh-pattern opacity-5"></div>
         
-        {error && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
-            {error}
-          </div>
-        )}
+        {/* Emblem */}
+        <div className="absolute top-0 right-0 bg-kazakh-emblem bg-contain bg-no-repeat w-24 h-24 opacity-20"></div>
         
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">Username</label>
-            <input
-              {...form.register("username")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="Enter your username"
-            />
-            {form.formState.errors.username && (
-              <p className="text-sm text-red-500">{form.formState.errors.username.message}</p>
-            )}
+        <div className="relative z-10">
+          <div className="text-center mb-8 flex flex-col items-center">
+            <div className="bg-kazakh-emblem bg-contain bg-no-repeat bg-center w-16 h-16 mb-2"></div>
+            <h1 className="text-3xl font-bold text-kazakh-darkBlue">Birlik Digital Bank</h1>
+            <p className="text-kazakh-blue mt-2">{t('signInToAccount')}</p>
           </div>
           
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">Password</label>
-            <input
-              {...form.register("password")}
-              type="password"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="Enter your password"
-            />
-            {form.formState.errors.password && (
-              <p className="text-sm text-red-500">{form.formState.errors.password.message}</p>
-            )}
+          {error && (
+            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md border border-red-200">
+              {error}
+            </div>
+          )}
+          
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-kazakh-darkBlue">{t('username')}</label>
+              <input
+                {...form.register("username")}
+                className="w-full px-3 py-2 border border-kazakh-blue/30 rounded-md focus:ring-2 focus:ring-kazakh-gold/50 focus:border-kazakh-gold transition-colors"
+                placeholder={t('enterUsername')}
+              />
+              {form.formState.errors.username && (
+                <p className="text-sm text-red-500">{form.formState.errors.username.message}</p>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-kazakh-darkBlue">{t('password')}</label>
+              <input
+                {...form.register("password")}
+                type="password"
+                className="w-full px-3 py-2 border border-kazakh-blue/30 rounded-md focus:ring-2 focus:ring-kazakh-gold/50 focus:border-kazakh-gold transition-colors"
+                placeholder={t('enterPassword')}
+              />
+              {form.formState.errors.password && (
+                <p className="text-sm text-red-500">{form.formState.errors.password.message}</p>
+              )}
+            </div>
+            
+            <button
+              type="submit"
+              className="w-full py-2 px-4 bg-gradient-to-r from-kazakh-blue to-kazakh-darkBlue text-white font-medium rounded-md hover:from-kazakh-darkBlue hover:to-kazakh-blue disabled:opacity-50 transition-all duration-300 border border-kazakh-gold/30"
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? t('signingIn') : t('signIn')}
+            </button>
+          </form>
+          
+          <div className="mt-6 text-center">
+            <p className="text-sm text-kazakh-darkBlue">
+              {t('dontHaveAccount')}{" "}
+              <Link to="/register" className="text-kazakh-blue font-medium hover:text-kazakh-darkBlue hover:underline transition-colors">
+                {t('register')}
+              </Link>
+            </p>
           </div>
           
-          <button
-            type="submit"
-            className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 disabled:opacity-50"
-            disabled={mutation.isPending}
-          >
-            {mutation.isPending ? "Signing in..." : "Sign In"}
-          </button>
-        </form>
-        
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
-            <Link to="/register" className="text-blue-600 hover:underline">
-              Register
-            </Link>
-          </p>
-        </div>
-        
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <h3 className="text-center text-sm font-medium text-gray-500 mb-4">
-            Birlik Digital Bank Features
-          </h3>
-          <ul className="space-y-2 text-sm text-gray-600">
-            <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
-              <span>SWIFT-independent cross-border transfers</span>
-            </li>
-            <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
-              <span>NFT-based digital identity passports</span>
-            </li>
-            <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
-              <span>Multi-currency wallet (Fiat, CBDC, Crypto)</span>
-            </li>
-            <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
-              <span>DAO governance for community decisions</span>
-            </li>
-          </ul>
+          <div className="mt-8 pt-6 border-t border-kazakh-gold/20 relative">
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-4">
+              <div className="bg-golden-horde bg-contain bg-no-repeat bg-center w-8 h-8 animate-ornament-pulse"></div>
+            </div>
+            
+            <h3 className="text-center text-sm font-medium text-kazakh-darkBlue mb-4">
+              {t('birlikFeatures')}
+            </h3>
+            <ul className="space-y-2 text-sm text-kazakh-darkBlue">
+              <li className="flex items-center">
+                <span className="mr-2 text-kazakh-gold">✓</span>
+                <span>{t('swiftIndependentTransfers')}</span>
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2 text-kazakh-gold">✓</span>
+                <span>{t('nftPassport')}</span>
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2 text-kazakh-gold">✓</span>
+                <span>{t('multiCurrency')}</span>
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2 text-kazakh-gold">✓</span>
+                <span>{t('daoGovernance')}</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
