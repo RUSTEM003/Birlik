@@ -85,6 +85,14 @@ export default function Layout() {
                 <span className="ml-2">{t('birlikLiveIntegration')}</span>
               </Link>
             </li>
+            <li>
+              <Link
+                to="/ar-dashboard"
+                className="flex items-center px-6 py-3 text-white hover:bg-kazakh-blue/30 hover:text-kazakh-gold border-l-4 border-transparent hover:border-kazakh-gold transition-all duration-200"
+              >
+                <span className="ml-2">{t('arFinancialDashboard')}</span>
+              </Link>
+            </li>
           </ul>
         </nav>
         

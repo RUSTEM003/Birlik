@@ -128,3 +128,17 @@ export const createExchangeRate = async (rateData: {
   const response = await api.post("/api/exchanges/rates", rateData);
   return response.data;
 };
+
+export const performQuantumTransaction = async (transactionData: {
+  sender_id: number;
+  receiver_id: number;
+  amount: number;
+}) => {
+  const response = await api.post("/api/quantum/transaction", transactionData);
+  return response.data;
+};
+
+export const getQuantumFinancialAdvice = async () => {
+  const response = await api.get("/api/quantum/financial-advice");
+  return response.data;
+};

@@ -7,8 +7,10 @@ from app.modules.auth.router import router as auth_router
 from app.modules.identity.router import router as identity_router
 from app.modules.centers.router import router as centers_router
 from app.modules.exchanges.router import router as exchanges_router
+from app.modules.payments.router import router as payments_router
 from app.integrations.birlik_live.webhooks import router as birlik_live_webhooks_router
 from app.integrations.birlik_live.router import router as birlik_live_router
+from app.modules.quantum.router import router as quantum_router
 from app.database import engine, Base
 
 app = FastAPI(
@@ -30,8 +32,10 @@ app.include_router(dfmi_router)
 app.include_router(identity_router)
 app.include_router(centers_router)
 app.include_router(exchanges_router)
+app.include_router(payments_router)
 app.include_router(birlik_live_webhooks_router)
 app.include_router(birlik_live_router)
+app.include_router(quantum_router)
 
 @app.on_event("startup")
 async def startup():

@@ -154,6 +154,15 @@ export const translations = {
     errorLoadingNationalCenters: 'Error loading national centers',
     selectExchange: 'Select Exchange',
     timestamp: 'Timestamp',
+    
+    arDashboard: 'AR Dashboard',
+    arNotSupported: 'AR Not Supported',
+    arWebMockMessage: 'AR view is not supported in web browsers. Showing a mock view instead.',
+    arFinancialDashboard: 'AR Financial Dashboard',
+    viewBalance: 'View Balance',
+    getAIAdvice: 'Get AI Financial Advice',
+    aiFinancialAdvice: 'AI Financial Advice',
+    adviceError: 'Error loading advice. Please try again.',
   },
   ru: {
     loading: 'Загрузка...',
@@ -306,6 +315,15 @@ export const translations = {
     errorLoadingNationalCenters: 'Ошибка загрузки национальных центров',
     selectExchange: 'Выбрать биржу',
     timestamp: 'Временная метка',
+    
+    arDashboard: 'AR Панель',
+    arNotSupported: 'AR не поддерживается',
+    arWebMockMessage: 'AR просмотр не поддерживается в веб-браузерах. Показан макет вместо этого.',
+    arFinancialDashboard: 'AR Финансовая панель',
+    viewBalance: 'Просмотр баланса',
+    getAIAdvice: 'Получить финансовый совет от ИИ',
+    aiFinancialAdvice: 'Финансовый совет от ИИ',
+    adviceError: 'Ошибка загрузки совета. Пожалуйста, попробуйте снова.',
   },
   kk: {
     loading: 'Жүктелуде...',
@@ -457,7 +475,16 @@ export const translations = {
     errorLoadingRegionalCenters: 'Аймақтық орталықтарды жүктеу қатесі',
     errorLoadingNationalCenters: 'Ұлттық орталықтарды жүктеу қатесі',
     selectExchange: 'Биржаны таңдаңыз',
-    timestamp: 'Уақыт белгісі'
+    timestamp: 'Уақыт белгісі',
+    
+    arDashboard: 'AR Тақтасы',
+    arNotSupported: 'AR қолданылмайды',
+    arWebMockMessage: 'AR көрінісі веб-браузерлерде қолданылмайды. Оның орнына макет көрсетілген.',
+    arFinancialDashboard: 'AR Қаржылық тақта',
+    viewBalance: 'Балансты көру',
+    getAIAdvice: 'ЖИ қаржылық кеңесін алу',
+    aiFinancialAdvice: 'ЖИ қаржылық кеңесі',
+    adviceError: 'Кеңес жүктеу қатесі. Қайталап көріңіз.'
   }
 };
 

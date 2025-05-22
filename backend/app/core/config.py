@@ -13,6 +13,11 @@ class Settings(BaseSettings):
     
     WEB3_PROVIDER_URI: str
     
+    XRPL_SERVER_URL: str = "https://s.altnet.rippletest.net:51234"
+    DEFAULT_BLOCKCHAIN: str = "ethereum"  # "ethereum", "xrp_ledger", or "quantum"
+    ENABLE_CROSS_CURRENCY: bool = False
+    ENABLE_QUANTUM: bool = False
+    
     IPFS_PROJECT_ID: Optional[str] = None
     IPFS_PROJECT_SECRET: Optional[str] = None
     WEB3_STORAGE_API_KEY: Optional[str] = None
