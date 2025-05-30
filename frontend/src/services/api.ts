@@ -142,3 +142,65 @@ export const getQuantumFinancialAdvice = async () => {
   const response = await api.get("/api/quantum/financial-advice");
   return response.data;
 };
+
+export const getUserXP = async () => {
+  const response = await api.get("/api/xp/user");
+  return response.data;
+};
+
+export const updateXP = async (xpData: {
+  amount: number;
+  action_type: string;
+  description?: string;
+}) => {
+  const response = await api.post("/api/xp/update", xpData);
+  return response.data;
+};
+
+export const getMissions = async (filters?: {
+  status?: 'active' | 'completed' | 'expired';
+  difficulty?: 'easy' | 'medium' | 'hard' | 'expert';
+}) => {
+  const queryParams = new URLSearchParams();
+  
+  if (filters) {
+    if (filters.status) queryParams.append('status', filters.status);
+    if (filters.difficulty) queryParams.append('difficulty', filters.difficulty);
+  }
+  
+  const url = `/api/missions${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+  const response = await api.get(url);
+  return response.data;
+};
+
+export const completeMission = async (missionId: string, proofData?: Record<string, any>) => {
+  const response = await api.post(`/api/missions/${missionId}/complete`, proofData || {});
+  return response.data;
+};
+
+export const getAIAnalytics = async (timeframe?: 'day' | 'week' | 'month' | 'year') => {
+  const url = timeframe ? `/api/analytics/ai?timeframe=${timeframe}` : '/api/analytics/ai';
+  const response = await api.get(url);
+  return response.data;
+};
+
+export const getXPRewards = async (category?: 'digital' | 'physical' | 'service') => {
+  const url = category ? `/api/xp/rewards?category=${category}` : '/api/xp/rewards';
+  const response = await api.get(url);
+  return response.data;
+};
+
+export const exchangeXP = async (rewardId: string) => {
+  const response = await api.post(`/api/xp/exchange/${rewardId}`);
+  return response.data;
+};
+
+export const getUserNFTs = async () => {
+  const response = await api.get("/api/nft/user");
+  return response.data;
+};
+
+export const activateNFT = async (nftId: string) => {
+  const response = await api.post(`/api/nft/${nftId}/activate`);
+  return response.data;
+};
