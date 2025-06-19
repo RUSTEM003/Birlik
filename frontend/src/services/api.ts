@@ -9,13 +9,55 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use((config) => {
+api.interceptors.request.use(async (config) => {
   const token = localStorage.getItem("token");
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const currentTime = Date.now() / 1000;
+      
+      if (payload.exp && payload.exp < currentTime + 300) {
+        const refreshTokenValue = localStorage.getItem("refresh_token");
+        if (refreshTokenValue) {
+          try {
+            const refreshResponse = await refreshToken(refreshTokenValue);
+            localStorage.setItem("token", refreshResponse.access_token);
+            localStorage.setItem("refresh_token", refreshResponse.refresh_token);
+            config.headers.Authorization = `Bearer ${refreshResponse.access_token}`;
+          } catch (refreshError) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("refresh_token");
+            window.location.href = "/login";
+            return Promise.reject(new Error("Session expired"));
+          }
+        } else {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+          return Promise.reject(new Error("Token expired"));
+        }
+      } else {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } catch (error) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refresh_token");
+      window.location.href = "/login";
+      return Promise.reject(new Error("Invalid token"));
+    }
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const login = async (credentials: { username: string; password: string }) => {
   const params = new URLSearchParams();
@@ -26,6 +68,13 @@ export const login = async (credentials: { username: string; password: string })
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
+  });
+  return response.data;
+};
+
+export const refreshToken = async (refreshToken: string) => {
+  const response = await api.post("/api/auth/refresh", {
+    refresh_token: refreshToken
   });
   return response.data;
 };

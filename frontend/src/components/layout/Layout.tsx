@@ -12,13 +12,29 @@ export default function Layout() {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login");
-    } else {
+      return;
+    }
+    
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const currentTime = Date.now() / 1000;
+      
+      if (payload.exp && payload.exp < currentTime) {
+        localStorage.removeItem("token");
+        navigate("/login");
+        return;
+      }
+      
       setIsAuthenticated(true);
+    } catch (error) {
+      localStorage.removeItem("token");
+      navigate("/login");
     }
   }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("refresh_token");
     setIsAuthenticated(false);
     navigate("/login");
   };
