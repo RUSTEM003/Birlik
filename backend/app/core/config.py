@@ -2,21 +2,21 @@ from pydantic_settings import BaseSettings
 from typing import Optional, List
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Birlik Digital Bank API"
-    API_V1_STR: str = "/api"
+    PROJECT_NAME: str = "Цифровой банк"
+    API_V1_STR: str = "/api/v1"
     
     DATABASE_URL: str
     
     SECRET_KEY: str
     ALGORITHM: str
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     
     WEB3_PROVIDER_URI: str
     
     XRPL_SERVER_URL: str = "https://s.altnet.rippletest.net:51234"
-    DEFAULT_BLOCKCHAIN: str = "ethereum"  # "ethereum", "xrp_ledger", or "quantum"
-    ENABLE_CROSS_CURRENCY: bool = False
-    ENABLE_QUANTUM: bool = False
+    DEFAULT_BLOCKCHAIN: str = "ethereum"
+    ENABLE_CROSS_CURRENCY: bool = True
+    ENABLE_QUANTUM: bool = True
     
     IPFS_PROJECT_ID: Optional[str] = None
     IPFS_PROJECT_SECRET: Optional[str] = None
@@ -30,6 +30,35 @@ class Settings(BaseSettings):
     GLOBAL_CENTER_ID: str = "GCDT"
     REGIONAL_CENTERS: List[str] = ["Asia", "Europe", "America", "Africa", "AustraliaOceania"]
     DEFAULT_REGION: str = "Asia"
+    
+    ENABLE_AUDIT_LOGGING: bool = True
+    ENABLE_RATE_LIMITING: bool = True
+    ENABLE_GEO_FENCING: bool = True
+    ENABLE_ZERO_TRUST: bool = True
+    ENABLE_AI_THREAT_DETECTION: bool = True
+    
+    BIS_API_ENDPOINT: str = "https://api.bis.org/v1"
+    FED_API_ENDPOINT: str = "https://api.federalreserve.gov/v1"
+    SWIFT_SECURE_ENDPOINT: str = "https://secure.swift.com/api/v1"
+    CBDC_NETWORK_ENDPOINT: str = "https://cbdc.network/api/v1"
+    
+    ENABLE_KYC_VERIFICATION: bool = True
+    ENABLE_AML_MONITORING: bool = True
+    ENABLE_SANCTIONS_SCREENING: bool = True
+    REGULATORY_REPORTING_ENDPOINT: str = "https://regulatory.digital-bank.com/api/v1"
+    
+    PROMETHEUS_ENDPOINT: str = "http://localhost:9090"
+    GRAFANA_ENDPOINT: str = "http://localhost:3000"
+    ELASTICSEARCH_ENDPOINT: str = "http://localhost:9200"
+    
+    SECURITY_HEADERS: dict = {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "X-XSS-Protection": "1; mode=block",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Content-Security-Policy": "default-src 'self'",
+        "Referrer-Policy": "strict-origin-when-cross-origin"
+    }
     
     class Config:
         env_file = ".env"

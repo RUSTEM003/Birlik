@@ -73,7 +73,7 @@ To integrate with the Birlik Live API, the following configuration settings are 
 - `IPFS_GATEWAY` - IPFS gateway URL (https://ipfs.io/ipfs)
 
 ## Integration Status
-The Birlik Digital Bank already has comprehensive integration code for Birlik Live, including:
+The Цифровой Банк already has comprehensive integration code for Birlik Live, including:
 - Backend API client
 - Authentication utilities
 - Webhook handlers

@@ -101,23 +101,23 @@ export default function BirlikLive() {
           <h2 className="text-xl font-semibold mb-4 text-kazakh-darkBlue">{t('birlikLiveFeatures')}</h2>
           <ul className="space-y-3 relative z-10">
             <li className="flex items-center">
-              <span className="mr-2 text-kazakh-gold">✓</span>
+              <span className="mr-2 text-kazakh-gold">•</span>
               <span className="text-kazakh-darkBlue">{t('crossBorderTransfers')}</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-kazakh-gold">✓</span>
+              <span className="mr-2 text-kazakh-gold">•</span>
               <span className="text-kazakh-darkBlue">{t('nftPassport')}</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-kazakh-gold">✓</span>
+              <span className="mr-2 text-kazakh-gold">•</span>
               <span className="text-kazakh-darkBlue">{t('multiCurrency')}</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-kazakh-gold">✓</span>
+              <span className="mr-2 text-kazakh-gold">•</span>
               <span className="text-kazakh-darkBlue">{t('blockchainVerification')}</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-kazakh-gold">✓</span>
+              <span className="mr-2 text-kazakh-gold">•</span>
               <span className="text-kazakh-darkBlue">{t('instantSettlement')}</span>
             </li>
           </ul>

@@ -1,4 +1,4 @@
-# Birlik Digital Bank
+# Цифровой Банк
 
 Цифровая банковская платформа для Казахстана, СНГ и Азии с поддержкой трансграничных переводов без SWIFT.
 
@@ -11,12 +11,12 @@
 - Верификация через блокчейн
 - NFT-паспорта для цифровой идентификации
 - Децентрализованное управление (DAO)
-- Интеграция с платформой Birlik Live
+- Интеграция с Live платформой
 
 ## Структура проекта
 
 ```
-birlik-digital-bank/
+digital-bank/
 ├── backend/              # FastAPI бэкенд
 │   ├── app/              # Основной код приложения
 │   │   ├── core/         # Конфигурация и утилиты
@@ -26,7 +26,7 @@ birlik-digital-bank/
 │   │   │   ├── identity/ # Цифровая идентификация
 │   │   ├── services/     # Сервисы приложения
 │   │   ├── integrations/ # Интеграции с внешними сервисами
-│   │   │   ├── birlik_live/ # Интеграция с Birlik Live
+│   │   │   ├── birlik_live/ # Интеграция с Live платформой
 │   ├── .env              # Переменные окружения
 │   ├── pyproject.toml    # Зависимости и конфигурация Poetry
 │
@@ -111,19 +111,19 @@ birlik-digital-bank/
 - Swagger UI: http://localhost:8000/docs
 - ReDoc: http://localhost:8000/redoc
 
-## Интеграция с Birlik Live
+## Интеграция с Live платформой
 
-Платформа интегрируется с Birlik Live для предоставления дополнительных сервисов:
+Платформа интегрируется с Live платформой для предоставления дополнительных сервисов:
 - Карты и геолокация
 - Маркетплейс
 - Социальная сеть
 
 Для настройки интеграции необходимо указать API ключи в файле .env бэкенда:
 ```
-BIRLIK_LIVE_API_KEY=your-birlik-live-api-key
-BIRLIK_LIVE_API_SECRET=your-birlik-live-api-secret
+LIVE_API_KEY=your-live-api-key
+LIVE_API_SECRET=your-live-api-secret
 ```
 
 ## Лицензия
 
-Copyright © 2025 Birlik Digital Bank
+Copyright © 2025 Цифровой Банк

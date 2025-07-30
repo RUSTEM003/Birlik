@@ -20,27 +20,27 @@ export default function Transfers() {
           <h3 className="text-xl font-bold mb-4">Transfer Features</h3>
           <ul className="space-y-2">
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>SWIFT-independent transfers</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Multi-currency support (Fiat, CBDC, Crypto)</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Instant settlement (3-5 seconds)</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Low fees (0.1-0.3%)</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Blockchain verification</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Cross-border support for CIS and Asia</span>
             </li>
           </ul>

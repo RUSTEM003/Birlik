@@ -1,4 +1,4 @@
-"""AI financial advisor service implementation."""
+"""Financial advisor service implementation."""
 import logging
 import random
 from typing import Dict, Any, List
@@ -6,18 +6,17 @@ from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
-class AIFinancialAdvisor:
-    """Service for AI-powered financial advice."""
+class FinancialAdvisor:
+    """Service for financial advice."""
     
     def __init__(self):
-        """Initialize the AI financial advisor service."""
-        logger.info("Initializing AI financial advisor service")
+        """Initialize the financial advisor service."""
+        logger.info("Initializing financial advisor service")
     
     def generate_advice(self, user_id: int) -> Dict[str, Any]:
         """
         Generate financial advice for a user based on their transaction history and balance.
         
-        In a production environment, this would use actual AI models.
         This is a placeholder implementation with predefined advice.
         """
         logger.info(f"Generating financial advice for user {user_id}")

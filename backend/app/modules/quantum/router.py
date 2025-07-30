@@ -9,12 +9,12 @@ from app.modules.quantum.schemas import (
     FinancialAdviceResponse
 )
 from app.services.quantum_blockchain import QuantumBlockchain
-from app.services.ai_financial_advisor import AIFinancialAdvisor
+from app.services.ai_financial_advisor import FinancialAdvisor
 
 router = APIRouter(prefix="/api/quantum", tags=["quantum"])
 
 quantum_blockchain = QuantumBlockchain()
-ai_advisor = AIFinancialAdvisor()
+ai_advisor = FinancialAdvisor()
 
 @router.post("/transaction", response_model=QuantumTransactionResponse)
 async def quantum_transaction(
@@ -41,7 +41,7 @@ async def financial_advice(
     db: AsyncSession = Depends(get_db)
 ):
     """
-    Get AI-generated financial advice for the current user.
+    Get financial advice for the current user.
     """
     try:
         advice = ai_advisor.generate_advice(current_user.id)

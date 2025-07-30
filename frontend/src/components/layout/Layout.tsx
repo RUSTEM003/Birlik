@@ -33,7 +33,7 @@ export default function Layout() {
       <div className="w-64 bg-gradient-to-b from-kazakh-darkBlue to-kazakh-blue shadow-lg border-r border-kazakh-gold">
         <div className="p-6 flex items-center justify-center">
           <div className="bg-kazakh-emblem bg-contain bg-no-repeat bg-center w-12 h-12 mr-2"></div>
-          <h1 className="text-2xl font-bold text-kazakh-gold">Birlik Bank</h1>
+          <h1 className="text-2xl font-bold text-kazakh-gold">Цифровой Банк</h1>
         </div>
         <nav className="mt-6">
           <ul className="space-y-1">

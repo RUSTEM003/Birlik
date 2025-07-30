@@ -5,7 +5,7 @@ export type Language = 'en' | 'ru' | 'kk';
 export const translations = {
   en: {
     loading: 'Loading...',
-    welcome: 'Welcome to Birlik Digital Bank',
+    welcome: 'Welcome to Цифровой Банк',
     
     dashboard: 'Dashboard',
     transfers: 'Transfers',
@@ -99,7 +99,7 @@ export const translations = {
     birlikLiveIntegration: 'Birlik Live Integration',
     connectToBirlikLive: 'Connect to Birlik Live',
     birlikLiveFeatures: 'Birlik Live Features',
-    birlikFeatures: 'Birlik Digital Bank Features',
+    birlikFeatures: 'Цифровой Банк Features',
     connectedToBirlikLive: 'Connected to Birlik Live',
     connecting: 'Connecting...',
     birlikLiveServices: 'Birlik Live Services',
@@ -160,13 +160,13 @@ export const translations = {
     arWebMockMessage: 'AR view is not supported in web browsers. Showing a mock view instead.',
     arFinancialDashboard: 'AR Financial Dashboard',
     viewBalance: 'View Balance',
-    getAIAdvice: 'Get AI Financial Advice',
-    aiFinancialAdvice: 'AI Financial Advice',
+    getAIAdvice: 'Get Financial Advice',
+    aiFinancialAdvice: 'Financial Advice',
     adviceError: 'Error loading advice. Please try again.',
   },
   ru: {
     loading: 'Загрузка...',
-    welcome: 'Добро пожаловать в Birlik Digital Bank',
+    welcome: 'Добро пожаловать в Цифровой Банк',
     
     dashboard: 'Панель управления',
     transfers: 'Переводы',
@@ -257,13 +257,13 @@ export const translations = {
     russian: 'Русский',
     kazakh: 'Казахский',
     
-    birlikLiveIntegration: 'Интеграция с Birlik Live',
-    connectToBirlikLive: 'Подключиться к Birlik Live',
-    birlikLiveFeatures: 'Функции Birlik Live',
-    birlikFeatures: 'Функции Birlik Digital Bank',
-    connectedToBirlikLive: 'Подключено к Birlik Live',
+    birlikLiveIntegration: 'Интеграция с Live платформой',
+    connectToBirlikLive: 'Подключиться к Live платформе',
+    birlikLiveFeatures: 'Функции Live платформы',
+    birlikFeatures: 'Функции Цифрового Банка',
+    connectedToBirlikLive: 'Подключено к Live платформе',
     connecting: 'Подключение...',
-    birlikLiveServices: 'Сервисы Birlik Live',
+    birlikLiveServices: 'Сервисы Live платформы',
     maps: 'Карты',
     mapsDescription: 'Интерактивные карты и сервисы локации',
     marketplace: 'Маркетплейс',
@@ -321,13 +321,13 @@ export const translations = {
     arWebMockMessage: 'AR просмотр не поддерживается в веб-браузерах. Показан макет вместо этого.',
     arFinancialDashboard: 'AR Финансовая панель',
     viewBalance: 'Просмотр баланса',
-    getAIAdvice: 'Получить финансовый совет от ИИ',
-    aiFinancialAdvice: 'Финансовый совет от ИИ',
+    getAIAdvice: 'Получить финансовый совет',
+    aiFinancialAdvice: 'Финансовый совет',
     adviceError: 'Ошибка загрузки совета. Пожалуйста, попробуйте снова.',
   },
   kk: {
     loading: 'Жүктелуде...',
-    welcome: 'Birlik Digital Bank-ке қош келдіңіз',
+    welcome: 'Цифровой Банк-ке қош келдіңіз',
     
     dashboard: 'Басқару тақтасы',
     transfers: 'Аударымдар',
@@ -421,7 +421,7 @@ export const translations = {
     birlikLiveIntegration: 'Birlik Live интеграциясы',
     connectToBirlikLive: 'Birlik Live-ке қосылу',
     birlikLiveFeatures: 'Birlik Live мүмкіндіктері',
-    birlikFeatures: 'Birlik Digital Bank мүмкіндіктері',
+    birlikFeatures: 'Цифровой Банк мүмкіндіктері',
     connectedToBirlikLive: 'Birlik Live-ке қосылды',
     connecting: 'Қосылуда...',
     birlikLiveServices: 'Birlik Live қызметтері',
@@ -482,8 +482,8 @@ export const translations = {
     arWebMockMessage: 'AR көрінісі веб-браузерлерде қолданылмайды. Оның орнына макет көрсетілген.',
     arFinancialDashboard: 'AR Қаржылық тақта',
     viewBalance: 'Балансты көру',
-    getAIAdvice: 'ЖИ қаржылық кеңесін алу',
-    aiFinancialAdvice: 'ЖИ қаржылық кеңесі',
+    getAIAdvice: 'Қаржылық кеңес алу',
+    aiFinancialAdvice: 'Қаржылық кеңес',
     adviceError: 'Кеңес жүктеу қатесі. Қайталап көріңіз.'
   }
 };

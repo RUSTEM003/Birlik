@@ -46,7 +46,7 @@ class BirlikLiveAuth:
             "sub": user_id,
             "exp": expires,
             "iat": datetime.utcnow(),
-            "iss": "birlik-digital-bank",
+            "iss": "digital-bank",
             "aud": "birlik-live"
         }
         
@@ -71,7 +71,7 @@ class BirlikLiveAuth:
                 token, 
                 self.api_secret, 
                 algorithms=["HS256"],
-                audience="birlik-digital-bank",
+                audience="digital-bank",
                 issuer="birlik-live"
             )
             return payload

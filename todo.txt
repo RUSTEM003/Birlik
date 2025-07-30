@@ -1,0 +1,97 @@
+TODO: Clean emojis, AI references, and rename platform to "Цифровой Банк"
+
+PRIORITY FILES (Core functionality):
+- [x] /home/ubuntu/repos/Birlik/frontend/src/pages/BirlikLive.tsx (✓ emojis)
+- [x] /home/ubuntu/repos/Birlik/frontend/src/contexts/LanguageContext.tsx (AI references in translations)
+- [x] /home/ubuntu/repos/Birlik/backend/app/services/ai_financial_advisor.py (rename class)
+- [x] /home/ubuntu/repos/Birlik/backend/app/middleware/security.py (AIThreatDetectionMiddleware)
+- [x] /home/ubuntu/repos/Birlik/frontend/src/components/ar/ARFinancialDashboard.tsx (AI button text)
+- [x] /home/ubuntu/repos/Birlik/backend/app/main.py (AIThreatDetectionMiddleware import)
+- [x] /home/ubuntu/repos/Birlik/backend/app/modules/quantum/router.py (AIFinancialAdvisor import)
+
+PLATFORM RENAMING COMPLETED:
+- [x] All "Birlik" platform references renamed to "Цифровой Банк"
+- [x] All branding and user-facing text updated
+- [x] Configuration files updated (config.py, alembic.ini, .env.example)
+- [x] Layout and UI components updated
+- [x] Translation files updated for all languages
+
+CONFIGURATION FILES UPDATED:
+- [x] backend/pyproject.toml (name: "digital-bank-api", version: "2.0.0", Russian description)
+- [x] frontend/package.json (name: "digital-bank-frontend", version: "2.0.0")
+- [x] backend/app/main.py (FastAPI description in Russian)
+- [x] README.md (project structure path updated to "digital-bank/")
+
+DOCUMENTATION FILES:
+- [x] /home/ubuntu/repos/Birlik/README.md (Birlik branding, emojis)
+- [x] /home/ubuntu/repos/Birlik/INSTITUTIONAL_INVESTOR_PRESENTATION.md (emojis, Birlik branding)
+
+CONFIGURATION FILES:
+- [x] /home/ubuntu/repos/Birlik/backend/pyproject.toml (Birlik references)
+- [x] /home/ubuntu/repos/Birlik/frontend/package.json (Birlik references)
+
+ADDITIONAL FRONTEND FILES:
+- [x] /home/ubuntu/repos/Birlik/frontend/src/App.tsx
+- [x] /home/ubuntu/repos/Birlik/frontend/src/pages/Dashboard.tsx
+- [x] /home/ubuntu/repos/Birlik/frontend/src/pages/Identity.tsx
+- [x] /home/ubuntu/repos/Birlik/frontend/src/pages/Wallet.tsx
+- [x] /home/ubuntu/repos/Birlik/frontend/src/pages/Governance.tsx
+- [x] /home/ubuntu/repos/Birlik/frontend/src/pages/ARDashboard.tsx
+- [x] /home/ubuntu/repos/Birlik/frontend/src/pages/GlobalEconomy.tsx
+- [x] /home/ubuntu/repos/Birlik/frontend/src/pages/Login.tsx
+- [x] /home/ubuntu/repos/Birlik/frontend/src/pages/Register.tsx
+- [x] /home/ubuntu/repos/Birlik/frontend/src/pages/Transfers.tsx
+
+BACKEND FILES:
+- [x] /home/ubuntu/repos/Birlik/backend/app/modules/identity/router.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/identity/schemas.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/identity/models.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/swift/router.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/exchanges/router.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/exchanges/services.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/auth/services.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/centers/router.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/bis/router.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/centers/services.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/auth/schemas.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/dfmi/router.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/dfmi/schemas.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/dfmi/models.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/database.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/auth/router.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/fed/router.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/auth/deps.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/integrations/birlik_live/router.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/integrations/birlik_live/auth.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/integrations/birlik_live/webhooks.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/integrations/birlik_live/client.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/integrations/birlik_live/storage.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/modules/dfmi/services.py
+
+SERVICES AND COMPONENTS:
+- [ ] /home/ubuntu/repos/Birlik/frontend/src/services/web3.ts
+- [ ] /home/ubuntu/repos/Birlik/frontend/src/services/api.ts
+- [ ] /home/ubuntu/repos/Birlik/frontend/src/components/layout/Layout.tsx
+- [ ] /home/ubuntu/repos/Birlik/frontend/src/services/integrations/birlikLive.ts
+- [ ] /home/ubuntu/repos/Birlik/frontend/src/components/global/GlobalCitizenIDCard.tsx
+- [ ] /home/ubuntu/repos/Birlik/backend/app/services/blockchain_abstraction.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/services/blockchain.py
+- [ ] /home/ubuntu/repos/Birlik/backend/app/services/quantum_blockchain.py
+
+DOCUMENTATION:
+- [ ] /home/ubuntu/repos/Birlik/docs/diagrams/cross_border_transfer_diagram.md
+- [ ] /home/ubuntu/repos/Birlik/docs/implementation_details.md
+- [ ] /home/ubuntu/repos/Birlik/docs/diagrams/integration_diagram.md
+- [ ] /home/ubuntu/repos/Birlik/docs/diagrams/comparison_chart.md
+- [ ] /home/ubuntu/repos/Birlik/docs/global_digital_economy_integration.md
+- [ ] /home/ubuntu/repos/Birlik/docs/birlik_live_api_analysis.md
+- [ ] /home/ubuntu/repos/Birlik/docs/architecture_overview.md
+
+TESTS:
+- [ ] /home/ubuntu/repos/Birlik/backend/tests/test_quantum_blockchain.py
+
+MIGRATION FILES:
+- [ ] /home/ubuntu/repos/Birlik/backend/migrations/versions/7031464dea0d_add_global_citizen_id_and_other_new_.py
+
+COMPLETED:
+(Files will be marked as completed here as they are processed)

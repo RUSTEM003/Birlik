@@ -102,7 +102,7 @@ export default function Register() {
         <div className="relative z-10">
           <div className="text-center mb-8 flex flex-col items-center">
             <div className="bg-kazakh-emblem bg-contain bg-no-repeat bg-center w-24 h-24 mb-2 animate-ornament-pulse"></div>
-            <h1 className="text-3xl font-bold text-kazakh-darkBlue">Birlik Digital Bank</h1>
+            <h1 className="text-3xl font-bold text-kazakh-darkBlue">Цифровой Банк</h1>
             <p className="text-kazakh-blue mt-2">{t('createAccount')}</p>
           </div>
           
@@ -224,19 +224,19 @@ export default function Register() {
             </h3>
             <ul className="space-y-2 text-sm text-kazakh-darkBlue">
               <li className="flex items-center">
-                <span className="mr-2 text-kazakh-gold">✓</span>
+                <span className="mr-2 text-kazakh-gold">•</span>
                 <span>{t('swiftIndependentTransfers')}</span>
               </li>
               <li className="flex items-center">
-                <span className="mr-2 text-kazakh-gold">✓</span>
+                <span className="mr-2 text-kazakh-gold">•</span>
                 <span>{t('nftPassport')}</span>
               </li>
               <li className="flex items-center">
-                <span className="mr-2 text-kazakh-gold">✓</span>
+                <span className="mr-2 text-kazakh-gold">•</span>
                 <span>{t('multiCurrency')}</span>
               </li>
               <li className="flex items-center">
-                <span className="mr-2 text-kazakh-gold">✓</span>
+                <span className="mr-2 text-kazakh-gold">•</span>
                 <span>{t('daoGovernance')}</span>
               </li>
             </ul>
