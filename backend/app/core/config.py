@@ -36,7 +36,8 @@ class Settings(BaseSettings):
     ENABLE_GEO_FENCING: bool = True
     ENABLE_ZERO_TRUST: bool = True
     ENABLE_AI_THREAT_DETECTION: bool = True
-    
+    ENABLE_THREAT_DETECTION: bool = True
+
     BIS_API_ENDPOINT: str = "https://api.bis.org/v1"
     FED_API_ENDPOINT: str = "https://api.federalreserve.gov/v1"
     SWIFT_SECURE_ENDPOINT: str = "https://secure.swift.com/api/v1"
