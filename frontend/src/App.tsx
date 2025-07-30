@@ -9,7 +9,7 @@ const Transfers = lazy(() => import("./pages/Transfers"));
 const Wallet = lazy(() => import("./pages/Wallet"));
 const Identity = lazy(() => import("./pages/Identity"));
 const Governance = lazy(() => import("./pages/Governance"));
-const BirlikLive = lazy(() => import("./pages/BirlikLive"));
+const LivePlatform = lazy(() => import("./pages/BirlikLive"));
 const GlobalEconomy = lazy(() => import("./pages/GlobalEconomy"));
 const ARDashboard = lazy(() => import("./pages/ARDashboard"));
 const Login = lazy(() => import("./pages/Login"));
@@ -33,7 +33,7 @@ function App() {
                 <Route path="wallet" element={<Wallet />} />
                 <Route path="identity" element={<Identity />} />
                 <Route path="governance" element={<Governance />} />
-                <Route path="birlik-live" element={<BirlikLive />} />
+                <Route path="live-platform" element={<LivePlatform />} />
                 <Route path="global-economy" element={<GlobalEconomy />} />
                 <Route path="ar-dashboard" element={<ARDashboard />} />
               </Route>

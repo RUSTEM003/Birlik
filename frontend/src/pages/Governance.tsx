@@ -145,27 +145,27 @@ export default function Governance() {
           <h2 className="text-xl font-semibold mb-4">Governance Features</h2>
           <ul className="space-y-2">
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Decentralized decision making</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Transparent voting system</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Blockchain-based voting records</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Community-driven development</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Proposal creation by stakeholders</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Automatic execution of passed proposals</span>
             </li>
           </ul>
@@ -174,7 +174,7 @@ export default function Governance() {
             <h3 className="font-medium mb-2">Your Voting Power</h3>
             <div className="flex justify-between items-center">
               <span>Voting tokens:</span>
-              <span className="font-bold">250 BRLK</span>
+              <span className="font-bold">250 DBK</span>
             </div>
             <div className="flex justify-between items-center">
               <span>Delegation:</span>

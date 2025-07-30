@@ -114,23 +114,23 @@ export default function Wallet() {
         <h2 className="text-xl font-semibold mb-4">Wallet Features</h2>
         <ul className="space-y-2">
           <li className="flex items-center">
-            <span className="mr-2 text-green-500">✓</span>
+            <span className="mr-2 text-green-500">•</span>
             <span>Multi-currency support (Fiat, CBDC, Crypto)</span>
           </li>
           <li className="flex items-center">
-            <span className="mr-2 text-green-500">✓</span>
+            <span className="mr-2 text-green-500">•</span>
             <span>Blockchain integration</span>
           </li>
           <li className="flex items-center">
-            <span className="mr-2 text-green-500">✓</span>
+            <span className="mr-2 text-green-500">•</span>
             <span>Instant currency conversion</span>
           </li>
           <li className="flex items-center">
-            <span className="mr-2 text-green-500">✓</span>
+            <span className="mr-2 text-green-500">•</span>
             <span>Secure storage with biometric authentication</span>
           </li>
           <li className="flex items-center">
-            <span className="mr-2 text-green-500">✓</span>
+            <span className="mr-2 text-green-500">•</span>
             <span>Integration with NFT-passport for identity verification</span>
           </li>
         </ul>

@@ -158,27 +158,27 @@ export default function Identity() {
           <h2 className="text-xl font-semibold mb-4">Identity Features</h2>
           <ul className="space-y-2">
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>NFT-based digital passport</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Biometric authentication</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Decentralized identity verification</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>IPFS storage for identity documents</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Cross-border identity recognition</span>
             </li>
             <li className="flex items-center">
-              <span className="mr-2 text-green-500">✓</span>
+              <span className="mr-2 text-green-500">•</span>
               <span>Selective disclosure of personal information</span>
             </li>
           </ul>
