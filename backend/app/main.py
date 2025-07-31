@@ -26,7 +26,7 @@ from slowapi.errors import RateLimitExceeded
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    openapi_url="/api/openapi.json",
     description="Корпоративная банковская платформа с интеграцией BIS, Федеральной резервной системы и SWIFT",
     version="2.0.0"
 )
@@ -49,7 +49,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # Disable CORS. Do not remove this for full-stack development.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://banking-model-app-eu9uqcyb.devinapps.com", "http://localhost:5173", "http://localhost:3000"],
+    allow_origins=["https://finance-dashboard-730u3vtl.devinapps.com", "https://banking-model-app-eu9uqcyb.devinapps.com", "http://localhost:5173", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
