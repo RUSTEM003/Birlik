@@ -1,0 +1,25 @@
+[settings.kubernetes]
+cluster-name = "${cluster_name}"
+
+[settings.kubernetes.node-labels]
+"node-type" = "background"
+"karpenter.sh/provisioner-name" = "${cluster_name}-background"
+
+[settings.kubernetes.node-taints]
+"node-type" = "background:NoSchedule"
+
+[settings.host-containers.admin]
+enabled = false
+
+[settings.host-containers.control]
+enabled = true
+
+[settings.kernel]
+lockdown = "integrity"
+
+[settings.oci-defaults]
+capabilities = []
+
+[settings.network]
+https-proxy = ""
+no-proxy = ["169.254.169.254", "localhost", "127.0.0.1"]

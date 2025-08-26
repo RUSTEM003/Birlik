@@ -1,0 +1,201 @@
+
+global:
+  domain: agi-portal.example.com
+  environment: production
+
+image:
+  backend:
+    repository: 123456789012.dkr.ecr.us-west-2.amazonaws.com/agi-portal-backend
+    tag: latest
+    pullPolicy: Always
+  frontend:
+    repository: 123456789012.dkr.ecr.us-west-2.amazonaws.com/agi-portal-frontend
+    tag: latest
+    pullPolicy: Always
+
+replicaCount:
+  backend: 3
+  frontend: 2
+
+resources:
+  backend:
+    limits:
+      cpu: "1"
+      memory: "1Gi"
+    requests:
+      cpu: "300m"
+      memory: "512Mi"
+  frontend:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  backend:
+    type: ClusterIP
+    port: 8000
+  frontend:
+    type: ClusterIP
+    port: 80
+
+ingress:
+  enabled: true
+  useALB: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    external-dns.alpha.kubernetes.io/hostname: "{{ .Values.global.domain }}"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  wafArn: ""  # Set this to enable WAF protection
+
+irsa:
+  enabled: true
+  roles:
+    externalDNS: ""
+    certManager: ""
+    externalSecrets: ""
+    albController: ""
+
+externalSecrets:
+  enabled: true
+  secretStore: aws-secrets
+  secrets:
+    backendSecret: "agi-portal/backend/secret"
+    databaseURL: "agi-portal/backend/database_url"
+    redisURL: "agi-portal/redis/url"
+    oidcConfig: "agi-portal/oidc/config"
+    aiProviders: "agi-portal/ai/providers"
+
+autoscaling:
+  backend:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 12
+    targetCPUUtilizationPercentage: 60
+    targetMemoryUtilizationPercentage: 70
+  frontend:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 8
+    targetCPUUtilizationPercentage: 70
+
+podDisruptionBudget:
+  backend:
+    enabled: true
+    minAvailable: 2
+  frontend:
+    enabled: true
+    minAvailable: 1
+
+autoscaling:
+  backend:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+  frontend:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 80
+
+monitoring:
+  enabled: true
+  serviceMonitor:
+    path: /metrics
+    interval: 30s
+
+networkPolicies:
+  enabled: true
+  defaultDenyAll: true
+
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app: agi-backend
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app: agi-backend
+
+nodeAffinity:
+  requiredDuringSchedulingIgnoredDuringExecution:
+    nodeSelectorTerms:
+    - matchExpressions:
+      - key: kubernetes.io/arch
+        operator: In
+        values:
+        - amd64
+
+podAntiAffinity:
+  preferredDuringSchedulingIgnoredDuringExecution:
+  - weight: 100
+    podAffinityTerm:
+      labelSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values:
+          - agi-backend
+      topologyKey: kubernetes.io/hostname
+
+monitoring:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    path: /metrics
+
+healthChecks:
+  backend:
+    readiness:
+      path: /health
+      port: 8000
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 3
+    liveness:
+      path: /health
+      port: 8000
+      initialDelaySeconds: 15
+      periodSeconds: 20
+      timeoutSeconds: 5
+      failureThreshold: 3
+  frontend:
+    readiness:
+      path: /
+      port: 80
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    liveness:
+      path: /
+      port: 80
+      initialDelaySeconds: 10
+      periodSeconds: 20
+
+persistence:
+  enabled: false
+  storageClass: gp3
+  size: 10Gi

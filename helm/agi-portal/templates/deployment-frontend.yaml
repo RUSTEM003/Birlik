@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agi-frontend
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "agi-portal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+spec:
+  replicas: {{ .Values.replicaCount.frontend }}
+  selector:
+    matchLabels:
+      {{- include "agi-portal.selectorLabels" . | nindent 6 }}
+      app: agi-frontend
+  template:
+    metadata:
+      labels:
+        {{- include "agi-portal.selectorLabels" . | nindent 8 }}
+        app: agi-frontend
+    spec:
+      serviceAccountName: agi-frontend
+      securityContext:
+        {{- toYaml .Values.securityContext | nindent 8 }}
+      {{- with .Values.nodeAffinity }}
+      affinity:
+        nodeAffinity:
+          {{- toYaml . | nindent 10 }}
+      {{- end }}
+      containers:
+      - name: frontend
+        image: "{{ .Values.image.frontend.repository }}:{{ .Values.image.frontend.tag }}"
+        imagePullPolicy: {{ .Values.image.frontend.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 10 }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.healthChecks.frontend.readiness.path }}
+            port: {{ .Values.healthChecks.frontend.readiness.port }}
+          initialDelaySeconds: {{ .Values.healthChecks.frontend.readiness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.healthChecks.frontend.readiness.periodSeconds }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.healthChecks.frontend.liveness.path }}
+            port: {{ .Values.healthChecks.frontend.liveness.port }}
+          initialDelaySeconds: {{ .Values.healthChecks.frontend.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.healthChecks.frontend.liveness.periodSeconds }}
+        resources:
+          {{- toYaml .Values.resources.frontend | nindent 10 }}
+        env:
+        - name: VITE_API_URL
+          value: "https://{{ .Values.global.domain }}/api"
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: var-cache
+          mountPath: /var/cache/nginx
+        - name: var-run
+          mountPath: /var/run
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: var-cache
+        emptyDir: {}
+      - name: var-run
+        emptyDir: {}

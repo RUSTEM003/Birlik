@@ -1,0 +1,40 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-signed-images
+  annotations:
+    policies.kyverno.io/title: Require Signed Container Images
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/description: >-
+      Requires all container images to be signed with cosign and verified against
+      the GitHub OIDC issuer for the repository.
+spec:
+  validationFailureAction: Enforce
+  background: false
+  rules:
+  - name: verify-cosign-signatures
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    verifyImages:
+    - imageReferences:
+      - "*.dkr.ecr.*.amazonaws.com/*"
+      attestors:
+      - entries:
+        - keyless:
+            issuer: "https://token.actions.githubusercontent.com"
+            subject: "repo:RUSTEM003/Birlik:ref:refs/heads/main"
+            rekor:
+              url: "https://rekor.sigstore.dev"
+    - imageReferences:
+      - "ghcr.io/rustem003/*"
+      attestors:
+      - entries:
+        - keyless:
+            issuer: "https://token.actions.githubusercontent.com"
+            subject: "repo:RUSTEM003/Birlik:ref:refs/heads/main"
+            rekor:
+              url: "https://rekor.sigstore.dev"

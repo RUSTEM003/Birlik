@@ -1,0 +1,25 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+  labels:
+    {{- include "agi-portal.labels" . | nindent 4 }}
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: admin@{{ .Values.global.domain }}
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - dns01:
+        route53:
+          region: {{ .Values.global.region | default "us-west-2" }}
+          hostedZoneID: {{ .Values.global.hostedZoneId | default "" }}
+          accessKeyID: ""
+          secretAccessKeySecretRef:
+            name: cert-manager-route53-credentials
+            key: secret-access-key
+      selector:
+        dnsNames:
+        - {{ .Values.global.domain }}
+        - "*.{{ .Values.global.domain }}"

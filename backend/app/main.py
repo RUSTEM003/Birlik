@@ -24,6 +24,8 @@ from app.modules.global_monitoring.router import router as global_monitoring_rou
 from app.modules.scientific_discovery.router import router as scientific_discovery_router
 from app.modules.constitutional_governance.router import router as constitutional_governance_router
 from app.modules.cbdc_gateway.router import router as cbdc_gateway_router
+from app.modules.ai_gateway.router import router as ai_gateway_router
+from app.modules.media.router import router as media_router
 from app.database import engine, Base
 from app.middleware.security import (
     SecurityHeadersMiddleware,
@@ -88,6 +90,8 @@ app.include_router(global_monitoring_router)
 app.include_router(scientific_discovery_router)
 app.include_router(constitutional_governance_router)
 app.include_router(cbdc_gateway_router)
+app.include_router(ai_gateway_router, prefix="/api", tags=["ai-gateway"])
+app.include_router(media_router, prefix="/api", tags=["media"])
 
 @app.on_event("startup")
 async def startup():

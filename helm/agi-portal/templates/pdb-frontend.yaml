@@ -1,0 +1,16 @@
+{{- if .Values.podDisruptionBudget.frontend.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: agi-frontend
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "agi-portal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+spec:
+  minAvailable: {{ .Values.podDisruptionBudget.frontend.minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "agi-portal.selectorLabels" . | nindent 6 }}
+      app: agi-frontend
+{{- end }}
