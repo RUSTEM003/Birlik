@@ -14,6 +14,7 @@ from ...modules.identity.models import User
 from .schemas import ChatRequest, ChatResponse, ProviderConfig
 from .guardrails import GuardrailsEngine
 from .providers import ProviderRouter
+from .circuit_breaker import CircuitBreaker, CircuitBreakerRegistry
 from ...core.config import settings
 
 router = APIRouter(prefix="/ai", tags=["ai-gateway"])
@@ -21,6 +22,7 @@ limiter = Limiter(key_func=get_remote_address)
 
 guardrails = GuardrailsEngine()
 provider_router = ProviderRouter()
+circuit_registry = CircuitBreakerRegistry()
 
 @router.post("/chat")
 @limiter.limit("60/minute")
@@ -46,6 +48,12 @@ async def chat_completion(
         
         await provider_router.check_quotas(current_user.id, provider)
         
+        circuit_breaker = circuit_registry.get_breaker(
+            f"provider-{provider.name}",
+            failure_threshold=3,
+            recovery_timeout=30
+        )
+        
         provider_request = {
             "model": chat_request.model or provider.default_model,
             "messages": filtered_messages,
@@ -56,11 +64,21 @@ async def chat_completion(
         
         if chat_request.stream:
             return StreamingResponse(
-                _stream_chat_completion(provider, provider_request, current_user.id),
+                circuit_breaker.call(
+                    _stream_chat_completion,
+                    provider,
+                    provider_request,
+                    current_user.id
+                ),
                 media_type="text/event-stream"
             )
         else:
-            response = await _complete_chat(provider, provider_request, current_user.id)
+            response = await circuit_breaker.call(
+                _complete_chat,
+                provider,
+                provider_request,
+                current_user.id
+            )
             return ChatResponse(**response)
             
     except Exception as e:

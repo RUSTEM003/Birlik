@@ -20,7 +20,7 @@ resource "aws_secretsmanager_secret" "database_url" {
 
 resource "aws_secretsmanager_secret_version" "database_url" {
   secret_id = aws_secretsmanager_secret.database_url.id
-  secret_string = "postgresql+psycopg2://${var.db_username}:${var.db_password}@${module.rds.db_instance_address}:5432/${var.db_name}"
+  secret_string = "postgresql+psycopg2://${var.db_username}:${var.db_password}@${aws_db_instance.main.address}:5432/${var.db_name}"
 }
 
 resource "aws_secretsmanager_secret" "oidc_config" {

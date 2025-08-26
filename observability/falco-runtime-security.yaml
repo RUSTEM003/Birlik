@@ -1,0 +1,159 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: falco-system
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: falco
+  namespace: falco-system
+spec:
+  selector:
+    matchLabels:
+      app: falco
+  template:
+    metadata:
+      labels:
+        app: falco
+    spec:
+      serviceAccountName: falco
+      hostNetwork: true
+      hostPID: true
+      containers:
+      - name: falco
+        image: falcosecurity/falco-no-driver:0.36.0
+        args:
+        - /usr/bin/falco
+        - --cri
+        - /run/containerd/containerd.sock
+        - --disable-source
+        - syscall
+        - --enable-source
+        - k8s_audit
+        - --k8s-api
+        - https://kubernetes.default.svc
+        - --k8s-api-cert
+        - /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        - --k8s-api-token
+        - /var/run/secrets/kubernetes.io/serviceaccount/token
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: containerd-socket
+          mountPath: /run/containerd/containerd.sock
+        - name: falco-config
+          mountPath: /etc/falco
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      volumes:
+      - name: containerd-socket
+        hostPath:
+          path: /run/containerd/containerd.sock
+      - name: falco-config
+        configMap:
+          name: falco-config
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/control-plane
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: falco
+  namespace: falco-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: falco
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  - namespaces
+  - pods
+  - replicationcontrollers
+  - services
+  - events
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - daemonsets
+  - deployments
+  - replicasets
+  - statefulsets
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: falco
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: falco
+subjects:
+- kind: ServiceAccount
+  name: falco
+  namespace: falco-system
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: falco-config
+  namespace: falco-system
+data:
+  falco.yaml: |
+    rules_file:
+      - /etc/falco/falco_rules.yaml
+      - /etc/falco/falco_rules.local.yaml
+      - /etc/falco/k8s_audit_rules.yaml
+    time_format_iso_8601: true
+    json_output: true
+    json_include_output_property: true
+    log_stderr: true
+    log_syslog: true
+    log_level: info
+    priority: debug
+    buffered_outputs: false
+    syscall_event_drops:
+      threshold: 0.1
+      actions:
+        - log
+        - alert
+      rate: 0.03333
+      max_burst: 1000
+    outputs:
+      rate: 1
+      max_burst: 1000
+    syslog_output:
+      enabled: true
+    file_output:
+      enabled: false
+    stdout_output:
+      enabled: true
+    webserver:
+      enabled: true
+      listen_port: 8765
+      k8s_healthz_endpoint: /healthz
+      ssl_enabled: false
+    grpc:
+      enabled: false
+    grpc_output:
+      enabled: false

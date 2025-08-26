@@ -83,3 +83,39 @@ output "external_secrets_role_arn" {
   description = "ARN of External Secrets IAM role"
   value       = aws_iam_role.external_secrets.arn
 }
+
+output "vpc_id" {
+  description = "ID of the VPC where the cluster is deployed"
+  value       = module.vpc.vpc_id
+}
+
+output "private_subnets" {
+  description = "List of IDs of private subnets"
+  value       = module.vpc.private_subnets
+}
+
+output "public_subnets" {
+  description = "List of IDs of public subnets"
+  value       = module.vpc.public_subnets
+}
+
+output "database_endpoint" {
+  description = "RDS instance endpoint"
+  value       = aws_db_instance.main.endpoint
+  sensitive   = true
+}
+
+output "database_port" {
+  description = "RDS instance port"
+  value       = aws_db_instance.main.port
+}
+
+output "waf_web_acl_arn" {
+  description = "The ARN of the WAF WebACL"
+  value       = aws_wafv2_web_acl.main.arn
+}
+
+output "kms_key_arn" {
+  description = "The ARN of the KMS key"
+  value       = aws_kms_key.main.arn
+}

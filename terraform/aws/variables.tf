@@ -23,6 +23,36 @@ variable "db_password" {
   sensitive   = true
 }
 
+variable "kms_key_deletion_window" {
+  description = "KMS key deletion window in days"
+  type        = number
+  default     = 7
+}
+
+variable "enable_guardduty" {
+  description = "Enable GuardDuty"
+  type        = bool
+  default     = true
+}
+
+variable "enable_security_hub" {
+  description = "Enable Security Hub"
+  type        = bool
+  default     = true
+}
+
+variable "enable_config" {
+  description = "Enable AWS Config"
+  type        = bool
+  default     = true
+}
+
+variable "enable_cloudtrail" {
+  description = "Enable CloudTrail"
+  type        = bool
+  default     = true
+}
+
 variable "db_name" {
   description = "Database name"
   type        = string

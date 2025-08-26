@@ -7,7 +7,7 @@ import "@openzeppelin/contracts-upgradeable/governance/extensions/GovernorCounti
 import "@openzeppelin/contracts-upgradeable/governance/extensions/GovernorVotesUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/governance/extensions/GovernorVotesQuorumFractionUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/governance/extensions/GovernorTimelockControlUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
@@ -40,8 +40,8 @@ contract AGIGovernance is
     function initialize(
         IVotes _token,
         TimelockControllerUpgradeable _timelock,
-        uint256 _votingDelay,
-        uint256 _votingPeriod,
+        uint48 _votingDelay,
+        uint32 _votingPeriod,
         uint256 _proposalThreshold,
         uint256 _quorumPercentage
     ) public initializer {
@@ -69,8 +69,13 @@ contract AGIGovernance is
         _unpause();
     }
 
-    function emergencyCancel(uint256 proposalId) public onlyRole(EMERGENCY_ROLE) {
-        _cancel(proposalId);
+    function emergencyCancel(
+        address[] memory targets,
+        uint256[] memory values,
+        bytes[] memory calldatas,
+        bytes32 descriptionHash
+    ) public onlyRole(EMERGENCY_ROLE) returns (uint256) {
+        return _cancel(targets, values, calldatas, descriptionHash);
     }
 
     // The following functions are overrides required by Solidity.
@@ -78,7 +83,7 @@ contract AGIGovernance is
     function votingDelay()
         public
         view
-        override(IGovernorUpgradeable, GovernorSettingsUpgradeable)
+        override(GovernorUpgradeable, GovernorSettingsUpgradeable)
         returns (uint256)
     {
         return super.votingDelay();
@@ -87,7 +92,7 @@ contract AGIGovernance is
     function votingPeriod()
         public
         view
-        override(IGovernorUpgradeable, GovernorSettingsUpgradeable)
+        override(GovernorUpgradeable, GovernorSettingsUpgradeable)
         returns (uint256)
     {
         return super.votingPeriod();
@@ -96,7 +101,7 @@ contract AGIGovernance is
     function quorum(uint256 blockNumber)
         public
         view
-        override(IGovernorUpgradeable, GovernorVotesQuorumFractionUpgradeable)
+        override(GovernorUpgradeable, GovernorVotesQuorumFractionUpgradeable)
         returns (uint256)
     {
         return super.quorum(blockNumber);
@@ -111,14 +116,42 @@ contract AGIGovernance is
         return super.proposalThreshold();
     }
 
-    function _execute(
+    function _executeOperations(
         uint256 proposalId,
         address[] memory targets,
         uint256[] memory values,
         bytes[] memory calldatas,
         bytes32 descriptionHash
     ) internal override(GovernorUpgradeable, GovernorTimelockControlUpgradeable) whenNotPaused {
-        super._execute(proposalId, targets, values, calldatas, descriptionHash);
+        super._executeOperations(proposalId, targets, values, calldatas, descriptionHash);
+    }
+
+    function _queueOperations(
+        uint256 proposalId,
+        address[] memory targets,
+        uint256[] memory values,
+        bytes[] memory calldatas,
+        bytes32 descriptionHash
+    ) internal override(GovernorUpgradeable, GovernorTimelockControlUpgradeable) returns (uint48) {
+        return super._queueOperations(proposalId, targets, values, calldatas, descriptionHash);
+    }
+
+    function proposalNeedsQueuing(uint256 proposalId) 
+        public 
+        view 
+        override(GovernorUpgradeable, GovernorTimelockControlUpgradeable) 
+        returns (bool) 
+    {
+        return super.proposalNeedsQueuing(proposalId);
+    }
+
+    function state(uint256 proposalId)
+        public
+        view
+        override(GovernorUpgradeable, GovernorTimelockControlUpgradeable)
+        returns (ProposalState)
+    {
+        return super.state(proposalId);
     }
 
     function _cancel(
@@ -142,7 +175,7 @@ contract AGIGovernance is
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(GovernorUpgradeable, GovernorTimelockControlUpgradeable, AccessControlUpgradeable)
+        override(GovernorUpgradeable, AccessControlUpgradeable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);

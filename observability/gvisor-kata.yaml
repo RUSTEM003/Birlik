@@ -1,0 +1,82 @@
+apiVersion: node.k8s.io/v1
+kind: RuntimeClass
+metadata:
+  name: gvisor
+handler: runsc
+overhead:
+  podFixed:
+    memory: "20Mi"
+    cpu: "10m"
+scheduling:
+  nodeClassification:
+    tolerations:
+    - effect: NoSchedule
+      key: sandbox.gke.io/runtime
+      operator: Equal
+      value: gvisor
+---
+apiVersion: node.k8s.io/v1
+kind: RuntimeClass
+metadata:
+  name: kata-containers
+handler: kata
+overhead:
+  podFixed:
+    memory: "130Mi"
+    cpu: "250m"
+scheduling:
+  nodeClassification:
+    tolerations:
+    - effect: NoSchedule
+      key: sandbox.kata.io/runtime
+      operator: Equal
+      value: kata
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-sandbox-runtime
+  annotations:
+    policies.kyverno.io/title: Require Sandbox Runtime for High-Risk Workloads
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      This policy requires high-risk workloads to use gVisor or Kata Containers
+      for additional isolation.
+spec:
+  validationFailureAction: enforce
+  background: true
+  rules:
+  - name: require-sandbox-for-ai-workloads
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          namespaces:
+          - agi-portal
+        clusterRoles:
+        - "system:serviceaccount:agi-portal:ai-gateway"
+    validate:
+      message: "AI Gateway workloads must use sandbox runtime (gvisor or kata-containers)"
+      anyPattern:
+      - spec:
+          runtimeClassName: "gvisor"
+      - spec:
+          runtimeClassName: "kata-containers"
+  - name: require-sandbox-for-user-content
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+        clusterRoles:
+        - "system:serviceaccount:agi-portal:user-content-processor"
+    validate:
+      message: "User content processing workloads must use sandbox runtime"
+      anyPattern:
+      - spec:
+          runtimeClassName: "gvisor"
+      - spec:
+          runtimeClassName: "kata-containers"

@@ -1,0 +1,79 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "RUSTEM003"
+    assignees:
+      - "RUSTEM003"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "RUSTEM003"
+    assignees:
+      - "RUSTEM003"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    
+  - package-ecosystem: "npm"
+    directory: "/contracts"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "RUSTEM003"
+    assignees:
+      - "RUSTEM003"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    
+  - package-ecosystem: "terraform"
+    directory: "/terraform/aws"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "RUSTEM003"
+    assignees:
+      - "RUSTEM003"
+    commit-message:
+      prefix: "terraform"
+      include: "scope"
+    
+  - package-ecosystem: "docker"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+    reviewers:
+      - "RUSTEM003"
+    assignees:
+      - "RUSTEM003"
+    commit-message:
+      prefix: "docker"
+      include: "scope"
+    
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+    reviewers:
+      - "RUSTEM003"
+    assignees:
+      - "RUSTEM003"
+    commit-message:
+      prefix: "ci"
+      include: "scope"

@@ -53,6 +53,7 @@ spec:
           not missing in provided
           msg := sprintf("Container %v must drop capability %v", [container.name, missing])
         }
+
 ---
 apiVersion: config.gatekeeper.sh/v1alpha1
 kind: K8sRequiredSecurityContext

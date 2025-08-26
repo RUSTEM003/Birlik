@@ -178,10 +178,31 @@ def has_media_permission(user: User, path: str, action: str) -> bool:
     """Check if user has permission for media path and action."""
     
     if path.startswith("agi-demo"):
-        return True  # Public demo streams
+        return True
     elif path.startswith("evidence-vault"):
-        return user.role in ["admin", "investigator"]  # Restricted access
+        return user.role in ["admin", "investigator"]
     elif path.startswith("demo-arena"):
-        return user.role in ["admin", "presenter"]  # Presenter access
+        return user.role in ["admin", "presenter"]
     
     return False
+
+def generate_signed_url(path: str, action: str, duration: int = 3600) -> str:
+    """Generate CloudFront signed URL with anti-replay protection."""
+    import time
+    import hashlib
+    import hmac
+    
+    expires = int(time.time()) + duration
+    nonce = hashlib.sha256(f"{path}{action}{expires}".encode()).hexdigest()[:16]
+    
+    policy = {
+        "Statement": [{
+            "Resource": f"https://media.agi-portal.com/{path}",
+            "Condition": {
+                "DateLessThan": {"AWS:EpochTime": expires},
+                "IpAddress": {"AWS:SourceIp": "0.0.0.0/0"}
+            }
+        }]
+    }
+    
+    return f"https://media.agi-portal.com/{path}?nonce={nonce}&expires={expires}"

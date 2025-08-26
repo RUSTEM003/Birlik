@@ -41,6 +41,7 @@ spec:
           allowed := input.parameters.allowedRegistries[_]
           startswith(image, allowed)
         }
+
 ---
 apiVersion: config.gatekeeper.sh/v1alpha1
 kind: K8sRequiredImageSignature
