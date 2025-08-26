@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import WeatherWidget from '../components/WeatherWidget';
 
 export default function AGIPortal() {
   const { } = useLanguage();
@@ -31,246 +32,273 @@ export default function AGIPortal() {
     return () => clearInterval(interval);
   }, []);
 
+  const handleCategoryClick = (category: string) => {
+    console.log(`Navigating to ${category} dashboard`);
+  };
+
   return (
-    <div className="space-y-6 relative">
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="bg-kazakh-emblem bg-contain bg-no-repeat bg-center w-80 h-80 opacity-20 animate-ornament-pulse"></div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-kazakh-paper via-kazakh-cream to-kazakh-platinum relative overflow-hidden">
+      <div className="absolute inset-0 bg-kazakh-pattern opacity-3"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-kazakh-emblem bg-contain bg-no-repeat opacity-8 animate-ornament-pulse"></div>
       
-      <div className="relative flex items-center space-x-4">
-        <div className="bg-kazakh-emblem bg-contain bg-no-repeat bg-center w-12 h-12 animate-ornament-pulse"></div>
-        <h1 className="text-3xl font-bold text-kazakh-darkBlue">AGI Defense Portal - Enhanced Global Coordination</h1>
-        <div className="flex space-x-2">
-          <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
-            Operational
-          </span>
-          <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-            99.999% Uptime
-          </span>
-          <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
-            Global Coordination Active
-          </span>
+      <div className="relative z-10 rothschild-header shadow-lg">
+        <div className="max-w-7xl mx-auto px-8 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-agi-world-logo bg-contain bg-no-repeat logo-glow"></div>
+                <div>
+                  <h1 className="text-3xl font-elite font-bold text-kazakh-ink tracking-tight">
+                    AGI Defense Portal
+                  </h1>
+                  <p className="text-sm text-kazakh-elegantGray font-medium">
+                    Independent Intelligence for a Complex World
+                  </p>
+                </div>
+              </div>
+              
+              <nav className="hidden lg:flex items-center space-x-8 ml-12">
+                <a href="#architecture" className="text-sm font-medium text-kazakh-ink hover:text-kazakh-accent transition-colors">Architecture</a>
+                <a href="#evidence" className="text-sm font-medium text-kazakh-ink hover:text-kazakh-accent transition-colors">Evidence</a>
+                <a href="#demos" className="text-sm font-medium text-kazakh-ink hover:text-kazakh-accent transition-colors">Demos</a>
+                <a href="#security" className="text-sm font-medium text-kazakh-ink hover:text-kazakh-accent transition-colors">Security</a>
+                <a href="#governance" className="text-sm font-medium text-kazakh-ink hover:text-kazakh-accent transition-colors">Governance</a>
+              </nav>
+            </div>
+            
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-3">
+                <div className="px-3 py-1 bg-green-50 border border-green-200 rounded-full">
+                  <span className="text-xs font-semibold text-green-800">Operational</span>
+                </div>
+                <div className="px-3 py-1 bg-blue-50 border border-blue-200 rounded-full">
+                  <span className="text-xs font-semibold text-blue-800">99.999%</span>
+                </div>
+              </div>
+              <WeatherWidget />
+            </div>
+          </div>
         </div>
       </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
-        <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md border-l-4 border-red-500">
-          <h2 className="text-xl font-semibold mb-4 text-red-700">Quantum Security (×10)</h2>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>Encryption:</span>
-              <span className="font-bold">{systemMetrics.quantumSecurity.level}</span>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-8 py-12">
+        <div className="text-center mb-16">
+          <h2 className="text-5xl font-elite font-bold text-kazakh-ink mb-6">
+            Independent Intelligence for a Complex World
+          </h2>
+          <p className="text-xl text-kazakh-elegantGray max-w-4xl mx-auto leading-relaxed mb-8">
+            Comprehensive AGI Defense Portal with enhanced global coordination capabilities across all critical domains. 
+            Each enhancement category demonstrates significant amplification factors for world-class Super AI foundation.
+          </p>
+          <div className="flex justify-center space-x-4 mb-8">
+            <button className="px-8 py-3 bg-kazakh-ink text-white font-semibold rounded-lg hover:bg-kazakh-navy transition-all duration-200 shadow-lg">
+              Explore Demos
+            </button>
+            <button className="px-8 py-3 border border-kazakh-ink text-kazakh-ink font-semibold rounded-lg hover:bg-kazakh-ink hover:text-white transition-all duration-200">
+              View Evidence
+            </button>
+          </div>
+          <div className="inline-flex items-center px-4 py-2 bg-green-50 border border-green-200 rounded-full">
+            <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+            <span className="text-sm font-medium text-green-800">Backend Status: Operational</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+          <div className="group relative elite-card rounded-xl p-8 hover:shadow-2xl transition-all duration-300">
+            <div className="absolute top-4 right-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-xl">×10</span>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span>Threats Detected:</span>
-              <span className="font-bold text-green-600">{systemMetrics.quantumSecurity.threats}</span>
+            
+            <div className="mb-6">
+              <div className="text-xs font-medium text-kazakh-accent uppercase tracking-wider mb-2">Global Advisory</div>
+              <h3 className="text-2xl font-elite font-bold text-kazakh-ink mb-3">Quantum Security</h3>
+              <p className="text-kazakh-elegantGray leading-relaxed">
+                Post-quantum cryptographic defense systems with {systemMetrics.quantumSecurity.algorithm} encryption. 
+                Zero threats detected across global infrastructure.
+              </p>
             </div>
-            <div className="flex justify-between">
-              <span>Algorithm:</span>
-              <span className="font-bold text-xs">{systemMetrics.quantumSecurity.algorithm}</span>
+            
+            <div className="space-y-3 mb-8">
+              <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-sm text-kazakh-elegantGray">Encryption Level</span>
+                <span className="text-sm font-semibold text-kazakh-ink">{systemMetrics.quantumSecurity.level}</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-sm text-kazakh-elegantGray">Threats Detected</span>
+                <span className="text-sm font-semibold text-green-600">{systemMetrics.quantumSecurity.threats}</span>
+              </div>
+              <div className="flex justify-between items-center py-2">
+                <span className="text-sm text-kazakh-elegantGray">Algorithm</span>
+                <span className="text-xs font-semibold text-kazakh-ink">{systemMetrics.quantumSecurity.algorithm}</span>
+              </div>
             </div>
-            <button className="w-full mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+            
+            <button 
+              onClick={() => handleCategoryClick('quantum-security')}
+              className="w-full py-3 bg-kazakh-ink text-white font-semibold rounded-lg hover:bg-kazakh-navy transition-all duration-200"
+            >
               Security Dashboard
             </button>
           </div>
-        </div>
 
-        <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md border-l-4 border-blue-500">
-          <h2 className="text-xl font-semibold mb-4 text-blue-700">Federated Learning (×5)</h2>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>Active Nodes:</span>
-              <span className="font-bold">{systemMetrics.federatedLearning.nodes}</span>
+          <div className="group relative elite-card rounded-xl p-8 hover:shadow-2xl transition-all duration-300">
+            <div className="absolute top-4 right-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-xl">×5</span>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span>Global Models:</span>
-              <span className="font-bold">{systemMetrics.federatedLearning.models}</span>
+            
+            <div className="mb-6">
+              <div className="text-xs font-medium text-kazakh-accent uppercase tracking-wider mb-2">Health & Bio</div>
+              <h3 className="text-2xl font-elite font-bold text-kazakh-ink mb-3">Federated Learning</h3>
+              <p className="text-kazakh-elegantGray leading-relaxed">
+                Distributed intelligence network with {systemMetrics.federatedLearning.nodes} active nodes 
+                achieving {systemMetrics.federatedLearning.accuracy}% accuracy across global models.
+              </p>
             </div>
-            <div className="flex justify-between">
-              <span>Accuracy:</span>
-              <span className="font-bold text-green-600">{systemMetrics.federatedLearning.accuracy}%</span>
+            
+            <div className="space-y-3 mb-8">
+              <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-sm text-kazakh-elegantGray">Active Nodes</span>
+                <span className="text-sm font-semibold text-kazakh-ink">{systemMetrics.federatedLearning.nodes}</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-sm text-kazakh-elegantGray">Global Models</span>
+                <span className="text-sm font-semibold text-blue-600">{systemMetrics.federatedLearning.models}</span>
+              </div>
+              <div className="flex justify-between items-center py-2">
+                <span className="text-sm text-kazakh-elegantGray">Accuracy</span>
+                <span className="text-sm font-semibold text-green-600">{systemMetrics.federatedLearning.accuracy}%</span>
+              </div>
             </div>
-            <button className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            
+            <button 
+              onClick={() => handleCategoryClick('federated-learning')}
+              className="w-full py-3 bg-kazakh-ink text-white font-semibold rounded-lg hover:bg-kazakh-navy transition-all duration-200"
+            >
               Learning Network
             </button>
           </div>
-        </div>
 
-        <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md border-l-4 border-purple-500">
-          <h2 className="text-xl font-semibold mb-4 text-purple-700">Auto-R&D (×7)</h2>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>Active Projects:</span>
-              <span className="font-bold">{systemMetrics.autoResearch.projects}</span>
+          <div className="group relative elite-card rounded-xl p-8 hover:shadow-2xl transition-all duration-300">
+            <div className="absolute top-4 right-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-xl">×7</span>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span>Breakthroughs:</span>
-              <span className="font-bold text-green-600">{systemMetrics.autoResearch.breakthroughs}</span>
+            
+            <div className="mb-6">
+              <div className="text-xs font-medium text-kazakh-accent uppercase tracking-wider mb-2">Security & Alignment</div>
+              <h3 className="text-2xl font-elite font-bold text-kazakh-ink mb-3">Auto-R&D</h3>
+              <p className="text-kazakh-elegantGray leading-relaxed">
+                Autonomous research and development with {systemMetrics.autoResearch.projects} active projects 
+                and {systemMetrics.autoResearch.breakthroughs} breakthrough discoveries.
+              </p>
             </div>
-            <div className="flex justify-between">
-              <span>Safety Score:</span>
-              <span className="font-bold text-green-600">{systemMetrics.autoResearch.safety}%</span>
+            
+            <div className="space-y-3 mb-8">
+              <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-sm text-kazakh-elegantGray">Active Projects</span>
+                <span className="text-sm font-semibold text-kazakh-ink">{systemMetrics.autoResearch.projects}</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-sm text-kazakh-elegantGray">Breakthroughs</span>
+                <span className="text-sm font-semibold text-purple-600">{systemMetrics.autoResearch.breakthroughs}</span>
+              </div>
+              <div className="flex justify-between items-center py-2">
+                <span className="text-sm text-kazakh-elegantGray">Safety Score</span>
+                <span className="text-sm font-semibold text-green-600">{systemMetrics.autoResearch.safety}%</span>
+              </div>
             </div>
-            <button className="w-full mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">
-              Research Lab
+            
+            <button 
+              onClick={() => handleCategoryClick('auto-research')}
+              className="w-full py-3 bg-kazakh-ink text-white font-semibold rounded-lg hover:bg-kazakh-navy transition-all duration-200"
+            >
+              R&D Laboratory
             </button>
           </div>
+
         </div>
 
-        <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md border-l-4 border-orange-500">
-          <h2 className="text-xl font-semibold mb-4 text-orange-700">Global Monitoring (×8)</h2>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>Active Threats:</span>
-              <span className="font-bold">{systemMetrics.globalMonitoring.threats}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Alert Level:</span>
-              <span className="font-bold text-green-600">{systemMetrics.globalMonitoring.alerts}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Sources:</span>
-              <span className="font-bold">{systemMetrics.globalMonitoring.sources}</span>
-            </div>
-            <button className="w-full mt-4 px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700">
-              Crisis Center
-            </button>
+        <div className="elite-card rounded-xl p-12 mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-elite font-bold text-kazakh-ink mb-4">Enhancement Status Overview</h2>
+            <p className="text-xl text-kazakh-elegantGray max-w-3xl mx-auto">
+              Real-time amplification metrics across all critical domains with comprehensive global coordination capabilities.
+            </p>
           </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-        <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md border-l-4 border-green-500">
-          <h2 className="text-xl font-semibold mb-4 text-green-700">Scientific Discovery (×7)</h2>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>Hypotheses:</span>
-              <span className="font-bold">{systemMetrics.scientificDiscovery.hypotheses}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Validated:</span>
-              <span className="font-bold text-green-600">{systemMetrics.scientificDiscovery.validated}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>CERN Integration:</span>
-              <span className="font-bold text-green-600">{systemMetrics.scientificDiscovery.cern}</span>
-            </div>
-            <button className="w-full mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-              Discovery Engine
-            </button>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6 mb-12">
+            {[
+              { factor: '×10', title: 'Quantum Security', subtitle: 'Post-Quantum Defense', color: 'red', metrics: systemMetrics.quantumSecurity },
+              { factor: '×5', title: 'Federated Learning', subtitle: 'Distributed Intelligence', color: 'blue', metrics: systemMetrics.federatedLearning },
+              { factor: '×7', title: 'Auto-R&D', subtitle: 'Self-Development', color: 'purple', metrics: systemMetrics.autoResearch },
+              { factor: '×8', title: 'Global Monitoring', subtitle: 'Crisis Management', color: 'orange', metrics: systemMetrics.globalMonitoring },
+              { factor: '×7', title: 'Scientific Discovery', subtitle: 'CERN Integration', color: 'green', metrics: systemMetrics.scientificDiscovery },
+              { factor: '×9', title: 'Constitutional Governance', subtitle: 'Democratic Oversight', color: 'indigo', metrics: systemMetrics.governance },
+              { factor: '×6', title: 'CBDC Gateway', subtitle: 'Digital Economy', color: 'yellow', metrics: systemMetrics.cbdcGateway }
+            ].map((item, index) => (
+              <div key={index} className="text-center p-6 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-200 cursor-pointer"
+                   onClick={() => handleCategoryClick(item.title.toLowerCase().replace(' ', '-'))}>
+                <div className={`text-3xl font-bold text-${item.color}-600 mb-3`}>{item.factor}</div>
+                <div className="text-sm font-semibold text-kazakh-ink mb-2">{item.title}</div>
+                <div className="text-xs text-kazakh-elegantGray mb-4">{item.subtitle}</div>
+                <div className="text-xs text-kazakh-elegantGray">
+                  {Object.values(item.metrics)[0]} active
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-
-        <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md border-l-4 border-indigo-500">
-          <h2 className="text-xl font-semibold mb-4 text-indigo-700">Constitutional Governance (×9)</h2>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>Active Proposals:</span>
-              <span className="font-bold">{systemMetrics.governance.proposals}</span>
+          
+          <div className="text-center">
+            <div className="inline-flex items-center px-6 py-3 bg-kazakh-accent/10 border border-kazakh-accent/20 rounded-lg">
+              <div className="text-3xl font-bold text-kazakh-accent mr-4">×7.4</div>
+              <div>
+                <div className="text-sm font-semibold text-kazakh-ink">Average Amplification Factor</div>
+                <div className="text-xs text-kazakh-elegantGray">Across all enhancement categories</div>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span>Participation:</span>
-              <span className="font-bold text-green-600">{systemMetrics.governance.participation}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Citizen Juries:</span>
-              <span className="font-bold">{systemMetrics.governance.juries}</span>
-            </div>
-            <button className="w-full mt-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">
-              Governance Hub
-            </button>
           </div>
         </div>
 
-        <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md border-l-4 border-yellow-500">
-          <h2 className="text-xl font-semibold mb-4 text-yellow-700">CBDC Gateway (×6)</h2>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>Networks:</span>
-              <span className="font-bold">{systemMetrics.cbdcGateway.networks}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Daily Volume:</span>
-              <span className="font-bold text-green-600">{systemMetrics.cbdcGateway.volume}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Smart Contracts:</span>
-              <span className="font-bold">{systemMetrics.cbdcGateway.contracts}</span>
-            </div>
-            <button className="w-full mt-4 px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700">
-              Economic Hub
-            </button>
+        <div className="bg-kazakh-ink rounded-xl p-12 text-white">
+          <div className="text-center mb-12">
+            <h3 className="text-4xl font-elite font-bold mb-4">World-Class Super AI Foundation</h3>
+            <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+              Comprehensive AGI Defense Portal with enhanced global coordination capabilities across all critical domains. 
+              Each enhancement category demonstrates significant amplification factors for world-class Super AI foundation.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              { title: 'Live Demos', icon: '🚀', href: '/live-demos', desc: 'Interactive demonstrations' },
+              { title: 'Evidence Vault', icon: '🔒', href: '/evidence-vault', desc: 'Secure documentation' },
+              { title: 'Gold Answers', icon: '💎', href: '/gold-answers', desc: 'Premium insights' },
+              { title: 'Governance', icon: '⚖️', href: '/governance', desc: 'Democratic oversight' }
+            ].map((item, index) => (
+              <button 
+                key={index}
+                onClick={() => window.location.href = item.href}
+                className="group p-6 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-200 text-left"
+              >
+                <div className="text-3xl mb-4">{item.icon}</div>
+                <div className="text-lg font-semibold mb-2">{item.title}</div>
+                <div className="text-sm text-gray-400">{item.desc}</div>
+              </button>
+            ))}
           </div>
         </div>
-      </div>
-      
-      <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md border border-kazakh-gold/20 relative z-10">
-        <div className="flex items-center space-x-2 mb-4">
-          <div className="w-1 h-6 bg-kazakh-gold rounded"></div>
-          <h2 className="text-xl font-semibold text-kazakh-darkBlue">Global Coordination Enhancement Status</h2>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-red-600">×10</div>
-            <div className="text-sm text-gray-600">Security Enhancement</div>
-            <div className="text-xs text-gray-500">Post-Quantum Cryptography</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600">×5</div>
-            <div className="text-sm text-gray-600">Architecture Amplification</div>
-            <div className="text-xs text-gray-500">Federated Learning</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-purple-600">×7</div>
-            <div className="text-sm text-gray-600">Self-Development</div>
-            <div className="text-xs text-gray-500">Auto-R&D Sandbox</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-orange-600">×8</div>
-            <div className="text-sm text-gray-600">Crisis Management</div>
-            <div className="text-xs text-gray-500">Global Monitoring</div>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">×7</div>
-            <div className="text-sm text-gray-600">Scientific Discovery</div>
-            <div className="text-xs text-gray-500">CERN Integration</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-indigo-600">×9</div>
-            <div className="text-sm text-gray-600">Governance Enhancement</div>
-            <div className="text-xs text-gray-500">Constitutional Oversight</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-yellow-600">×6</div>
-            <div className="text-sm text-gray-600">Economic Coordination</div>
-            <div className="text-xs text-gray-500">CBDC Gateway</div>
-          </div>
-        </div>
-        
-        <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
-          <h3 className="text-lg font-semibold text-kazakh-darkBlue mb-2">World-Class Super AI Foundation</h3>
-          <p className="text-sm text-gray-600 mb-4">
-            Comprehensive AGI Defense Portal with enhanced global coordination capabilities across all critical domains
+
+        <footer className="mt-16 pt-8 border-t border-gray-200 text-center">
+          <p className="text-sm text-kazakh-elegantGray">
+            © 2025 AGI Defense Systems. All rights reserved. Independent Intelligence for a Complex World.
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            <button className="px-3 py-2 bg-kazakh-blue text-white rounded text-sm hover:bg-kazakh-darkBlue transition-colors">
-              Live Demos
-            </button>
-            <button className="px-3 py-2 bg-kazakh-blue text-white rounded text-sm hover:bg-kazakh-darkBlue transition-colors">
-              Evidence Vault
-            </button>
-            <button className="px-3 py-2 bg-kazakh-blue text-white rounded text-sm hover:bg-kazakh-darkBlue transition-colors">
-              Gold Answers
-            </button>
-            <button className="px-3 py-2 bg-kazakh-blue text-white rounded text-sm hover:bg-kazakh-darkBlue transition-colors">
-              Governance
-            </button>
-          </div>
-        </div>
+        </footer>
       </div>
     </div>
   );
