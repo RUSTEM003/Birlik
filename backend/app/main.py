@@ -13,6 +13,10 @@ from app.modules.quantum.router import router as quantum_router
 from app.modules.bis.router import router as bis_router
 from app.modules.fed.router import router as fed_router
 from app.modules.swift.router import router as swift_router
+from app.modules.agi_portal.router import router as agi_portal_router
+from app.modules.live_demos.router import router as live_demos_router
+from app.modules.evidence_vault.router import router as evidence_vault_router
+from app.modules.gold_answers.router import router as gold_answers_router
 from app.database import engine, Base
 from app.middleware.security import (
     SecurityHeadersMiddleware,
@@ -66,6 +70,10 @@ app.include_router(quantum_router)
 app.include_router(bis_router)
 app.include_router(fed_router)
 app.include_router(swift_router)
+app.include_router(agi_portal_router)
+app.include_router(live_demos_router)
+app.include_router(evidence_vault_router)
+app.include_router(gold_answers_router)
 
 @app.on_event("startup")
 async def startup():
@@ -85,7 +93,11 @@ async def root():
             "Enterprise Security",
             "Quantum Blockchain",
             "Cross-border Transfers",
-            "CBDC Support"
+            "CBDC Support",
+            "AGI Defense Portal",
+            "Live Demo Arena",
+            "Evidence Vault",
+            "Gold-Answer Library"
         ],
         "compliance": [
             "Basel III",

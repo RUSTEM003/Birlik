@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -142,3 +142,25 @@ export const getQuantumFinancialAdvice = async () => {
   const response = await api.get("/api/quantum/financial-advice");
   return response.data;
 };
+
+export const runSpaceDemo = async () => {
+  const response = await api.post("/api/live-demos/space/lunar-landing");
+  return response.data;
+};
+
+export const runEconomyDemo = async () => {
+  const response = await api.post("/api/live-demos/economy/cbdc-stress");
+  return response.data;
+};
+
+export const runMedicineDemo = async () => {
+  const response = await api.post("/api/live-demos/medicine/drug-discovery");
+  return response.data;
+};
+
+export const runSecurityDemo = async () => {
+  const response = await api.post("/api/live-demos/security/red-team");
+  return response.data;
+};
+
+export default api;
