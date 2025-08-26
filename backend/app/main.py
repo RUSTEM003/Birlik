@@ -17,6 +17,13 @@ from app.modules.agi_portal.router import router as agi_portal_router
 from app.modules.live_demos.router import router as live_demos_router
 from app.modules.evidence_vault.router import router as evidence_vault_router
 from app.modules.gold_answers.router import router as gold_answers_router
+from app.modules.quantum_security.router import router as quantum_security_router
+from app.modules.federated_learning.router import router as federated_learning_router
+from app.modules.auto_research.router import router as auto_research_router
+from app.modules.global_monitoring.router import router as global_monitoring_router
+from app.modules.scientific_discovery.router import router as scientific_discovery_router
+from app.modules.constitutional_governance.router import router as constitutional_governance_router
+from app.modules.cbdc_gateway.router import router as cbdc_gateway_router
 from app.database import engine, Base
 from app.middleware.security import (
     SecurityHeadersMiddleware,
@@ -74,6 +81,13 @@ app.include_router(agi_portal_router)
 app.include_router(live_demos_router)
 app.include_router(evidence_vault_router)
 app.include_router(gold_answers_router)
+app.include_router(quantum_security_router)
+app.include_router(federated_learning_router)
+app.include_router(auto_research_router)
+app.include_router(global_monitoring_router)
+app.include_router(scientific_discovery_router)
+app.include_router(constitutional_governance_router)
+app.include_router(cbdc_gateway_router)
 
 @app.on_event("startup")
 async def startup():
@@ -95,9 +109,16 @@ async def root():
             "Cross-border Transfers",
             "CBDC Support",
             "AGI Defense Portal",
-            "Live Demo Arena",
+            "Live Demo Arena", 
             "Evidence Vault",
-            "Gold-Answer Library"
+            "Gold-Answer Library",
+            "Quantum Security",
+            "Federated Learning",
+            "Auto-R&D",
+            "Global Monitoring",
+            "Scientific Discovery",
+            "Constitutional Governance",
+            "CBDC Gateway"
         ],
         "compliance": [
             "Basel III",
