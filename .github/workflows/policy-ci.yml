@@ -1,0 +1,161 @@
+name: Policy and Security CI
+
+on:
+  pull_request:
+    paths:
+    - 'helm/**'
+    - 'terraform/**'
+    - 'platform/policies/**'
+    - '.github/workflows/policy-ci.yml'
+  push:
+    branches: [main, develop]
+
+jobs:
+  policy-validation:
+    runs-on: ubuntu-latest
+    name: Policy Validation
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Setup Conftest
+      uses: instrumenta/conftest-action/installer@master
+      with:
+        conftest-version: '0.46.0'
+    
+    - name: Setup kube-score
+      run: |
+        wget https://github.com/zegl/kube-score/releases/download/v1.16.1/kube-score_1.16.1_linux_amd64.tar.gz
+        tar xzf kube-score_1.16.1_linux_amd64.tar.gz
+        sudo mv kube-score /usr/local/bin/
+    
+    - name: Setup Polaris
+      run: |
+        wget https://github.com/FairwindsOps/polaris/releases/download/8.5.1/polaris_linux_amd64.tar.gz
+        tar xzf polaris_linux_amd64.tar.gz
+        sudo mv polaris /usr/local/bin/
+    
+    - name: Setup Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: '3.12.0'
+    
+    - name: Validate Kyverno Policies
+      run: |
+        if [ -d "platform/policies/kyverno" ]; then
+          echo "Validating Kyverno policies..."
+          for policy in platform/policies/kyverno/*.yaml; do
+            echo "Validating $policy"
+            kubectl --dry-run=client apply -f "$policy" || exit 1
+          done
+        fi
+    
+    - name: Render Helm Templates
+      run: |
+        if [ -d "helm/agi-portal" ]; then
+          echo "Rendering Helm templates..."
+          helm template agi-portal helm/agi-portal --values helm/agi-portal/values.yaml > /tmp/rendered-manifests.yaml
+        fi
+    
+    - name: Run Conftest on Kubernetes Manifests
+      run: |
+        if [ -f "/tmp/rendered-manifests.yaml" ]; then
+          echo "Running Conftest on rendered manifests..."
+          conftest test /tmp/rendered-manifests.yaml --policy platform/policies/conftest/ || true
+        fi
+    
+    - name: Run kube-score
+      run: |
+        if [ -f "/tmp/rendered-manifests.yaml" ]; then
+          echo "Running kube-score..."
+          kube-score score /tmp/rendered-manifests.yaml || true
+        fi
+    
+    - name: Run Polaris
+      run: |
+        if [ -f "/tmp/rendered-manifests.yaml" ]; then
+          echo "Running Polaris..."
+          polaris audit --audit-path /tmp/rendered-manifests.yaml --format=pretty || true
+        fi
+
+  terraform-validation:
+    runs-on: ubuntu-latest
+    name: Terraform Validation
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: '1.5.0'
+    
+    - name: Setup tflint
+      uses: terraform-linters/setup-tflint@v4
+      with:
+        tflint_version: v0.47.0
+    
+    - name: Setup tfsec
+      uses: aquasecurity/tfsec-action@v1.0.3
+    
+    - name: Setup Checkov
+      uses: bridgecrewio/checkov-action@master
+    
+    - name: Terraform Format Check
+      run: |
+        if [ -d "terraform" ]; then
+          terraform fmt -check -recursive terraform/
+        fi
+    
+    - name: Terraform Validate
+      run: |
+        if [ -d "terraform/aws" ]; then
+          cd terraform/aws
+          terraform init -backend=false
+          terraform validate
+        fi
+    
+    - name: Run tflint
+      run: |
+        if [ -d "terraform" ]; then
+          tflint --init
+          tflint terraform/aws/
+        fi
+    
+    - name: Run tfsec
+      run: |
+        if [ -d "terraform" ]; then
+          tfsec terraform/aws/ --soft-fail
+        fi
+    
+    - name: Run Checkov
+      run: |
+        if [ -d "terraform" ]; then
+          checkov -d terraform/aws/ --soft-fail
+        fi
+
+  infracost:
+    runs-on: ubuntu-latest
+    name: Infrastructure Cost Analysis
+    if: github.event_name == 'pull_request'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Setup Infracost
+      uses: infracost/actions/setup@v2
+      with:
+        api-key: ${{ secrets.INFRACOST_API_KEY }}
+    
+    - name: Generate Infracost diff
+      run: |
+        if [ -d "terraform/aws" ]; then
+          cd terraform/aws
+          infracost breakdown --path . --format json --out-file /tmp/infracost-base.json || true
+          infracost diff --path . --compare-to /tmp/infracost-base.json --format json --out-file /tmp/infracost-diff.json || true
+          infracost comment github --path /tmp/infracost-diff.json \
+            --repo $GITHUB_REPOSITORY \
+            --github-token ${{ secrets.GITHUB_TOKEN }} \
+            --pull-request ${{ github.event.pull_request.number }} \
+            --behavior update || true
+        fi

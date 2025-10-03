@@ -1,0 +1,140 @@
+# MediaMTX configuration with JWT authentication and security
+
+# General settings
+logLevel: info
+logDestinations: [stdout]
+logFile: ""
+
+# API settings
+api: yes
+apiAddress: 0.0.0.0:9997
+
+# Metrics
+metrics: yes
+metricsAddress: 0.0.0.0:9998
+
+# RTMP settings
+rtmp: yes
+rtmpAddress: :1935
+
+# HLS settings
+hls: yes
+hlsAddress: :8888
+hlsAllowOrigin: "*"
+hlsVariant: mpegts
+hlsSegmentCount: 3
+hlsSegmentDuration: 1s
+
+# WebRTC settings
+webrtc: yes
+webrtcAddress: :8889
+webrtcAllowOrigin: "*"
+
+# Authentication
+authMethod: http
+authHTTPAddress: http://agi-backend.agi:8000/api/media/auth
+authHTTPExclude: []
+
+# Path settings
+paths:
+  # AGI Portal live streams
+  agi-demo:
+    source: publisher
+    publishUser: ""
+    publishPass: ""
+    publishIPs: []
+    readUser: ""
+    readPass: ""
+    readIPs: []
+    
+    # Authentication for this path
+    publishAuthHTTPAddress: http://agi-backend.agi:8000/api/media/auth/publish
+    readAuthHTTPAddress: http://agi-backend.agi:8000/api/media/auth/read
+    
+    # Recording settings
+    record: yes
+    recordPath: /recordings/agi-demo/%Y-%m-%d_%H-%M-%S.mp4
+    recordFormat: mp4
+    recordPartDuration: 1h
+    recordSegmentDuration: 1h
+    
+    # Hooks
+    runOnPublish: curl -X POST http://agi-backend.agi:8000/api/media/hooks/publish -d '{"path":"$MTX_PATH","query":"$MTX_QUERY"}'
+    runOnPublishRestart: yes
+    runOnUnPublish: curl -X POST http://agi-backend.agi:8000/api/media/hooks/unpublish -d '{"path":"$MTX_PATH"}'
+    
+    runOnRead: curl -X POST http://agi-backend.agi:8000/api/media/hooks/read -d '{"path":"$MTX_PATH","query":"$MTX_QUERY"}'
+    runOnReadRestart: yes
+    runOnUnRead: curl -X POST http://agi-backend.agi:8000/api/media/hooks/unread -d '{"path":"$MTX_PATH"}'
+
+  # Evidence vault streams
+  evidence-vault:
+    source: publisher
+    publishAuthHTTPAddress: http://agi-backend.agi:8000/api/media/auth/publish
+    readAuthHTTPAddress: http://agi-backend.agi:8000/api/media/auth/read
+    
+    record: yes
+    recordPath: /recordings/evidence-vault/%Y-%m-%d_%H-%M-%S.mp4
+    recordFormat: mp4
+    recordPartDuration: 24h
+    recordSegmentDuration: 1h
+    
+    # Immutable recording for evidence
+    recordDeleteAfter: 0  # Never delete
+
+  # Live demo arena
+  demo-arena:
+    source: publisher
+    publishAuthHTTPAddress: http://agi-backend.agi:8000/api/media/auth/publish
+    readAuthHTTPAddress: http://agi-backend.agi:8000/api/media/auth/read
+    
+    record: yes
+    recordPath: /recordings/demo-arena/%Y-%m-%d_%H-%M-%S.mp4
+    recordFormat: mp4
+    recordPartDuration: 2h
+    recordSegmentDuration: 30m
+
+# Default path settings for all other paths
+pathDefaults:
+  source: publisher
+  sourceFingerprint: ""
+  sourceOnDemand: no
+  sourceOnDemandStartTimeout: 10s
+  sourceOnDemandCloseAfter: 10s
+  maxReaders: 0
+  
+  # Authentication
+  publishAuthHTTPAddress: http://agi-backend.agi:8000/api/media/auth/publish
+  readAuthHTTPAddress: http://agi-backend.agi:8000/api/media/auth/read
+  
+  # Recording disabled by default
+  record: no
+  
+  # Rate limiting
+  sourceRedirect: ""
+  rpiCameraCamID: 0
+  rpiCameraWidth: 1920
+  rpiCameraHeight: 1080
+  rpiCameraHFlip: no
+  rpiCameraVFlip: no
+  rpiCameraBrightness: 0
+  rpiCameraContrast: 0
+  rpiCameraSaturation: 0
+  rpiCameraSharpness: 0
+  rpiCameraExposure: auto
+  rpiCameraAWB: auto
+  rpiCameraAWBGains: [0, 0]
+  rpiCameraDenoise: "off"
+  rpiCameraShutter: 0
+  rpiCameraMetering: centre
+  rpiCameraGain: 0
+  rpiCameraEV: 0
+  rpiCameraROI: [0, 0, 1, 1]
+  rpiCameraHDR: no
+  rpiCameraTuningFile: ""
+  rpiCameraMode: ""
+  rpiCameraFPS: 30
+  rpiCameraIDRPeriod: 60
+  rpiCameraBitrate: 1000000
+  rpiCameraProfile: main
+  rpiCameraLevel: "4.1"

@@ -26,7 +26,17 @@ export default {
                 darkBlue: '#005E8A',  // Темно-голубой для контраста
                 darkGold: '#E6A800',  // Темно-золотой для контраста
                 light: '#E6F7FB',     // Светло-голубой для фона
-                ornament: '#D4A017'   // Цвет для орнаментов
+                ornament: '#D4A017',  // Цвет для орнаментов
+                platinum: '#E5E4E2',  // Premium platinum
+                charcoal: '#36454F',  // Professional charcoal
+                navy: '#1B2951',      // Elite navy
+                cream: '#F5F5DC',     // Elegant cream
+                silver: '#C0C0C0',    // Sophisticated silver
+                deepBlue: '#003366',  // Deep professional blue
+                elegantGray: '#8B8680', // Refined gray
+                ink: '#0E1B2C',      // Deep ink blue
+                paper: '#FEFEFE',    // Pure paper white
+                accent: '#C6A769'    // Premium gold accent
             }
   		},
   		keyframes: {
@@ -65,7 +75,28 @@ export default {
             'kazakh-ornament': "url('../src/assets/kazakh-ornament.svg')",
             'kazakh-pattern': "url('../src/assets/kazakh-pattern.svg')",
             'golden-horde': "url('../src/assets/golden-horde.svg')",
-            'kazakh-emblem': "url('../src/assets/kazakh-emblem.svg')"
+            'kazakh-emblem': "url('../src/assets/kazakh-emblem.svg')",
+            'agi-world-logo': "url('../src/assets/agi-world-logo.svg')"
+        },
+        fontFamily: {
+            'financial': ['Inter', 'system-ui', 'sans-serif'],
+            'heading': ['Playfair Display', 'Georgia', 'serif'],
+            'body': ['Inter', 'system-ui', 'sans-serif'],
+            'elite': ['Playfair Display', 'Georgia', 'serif']
+        },
+        fontSize: {
+            'financial-xs': ['0.75rem', { lineHeight: '1rem' }],
+            'financial-sm': ['0.875rem', { lineHeight: '1.25rem' }],
+            'financial-base': ['1rem', { lineHeight: '1.5rem' }],
+            'financial-lg': ['1.125rem', { lineHeight: '1.75rem' }],
+            'financial-xl': ['1.25rem', { lineHeight: '1.75rem' }],
+            'financial-2xl': ['1.5rem', { lineHeight: '2rem' }],
+            'financial-3xl': ['1.875rem', { lineHeight: '2.25rem' }]
+        },
+        spacing: {
+            'financial': '0.75rem',
+            'financial-lg': '1.5rem',
+            'financial-xl': '2rem'
         }
   	}
   },

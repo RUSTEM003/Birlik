@@ -1,0 +1,55 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-spire-spiffe-identity
+  annotations:
+    policies.kyverno.io/title: Require SPIRE/SPIFFE Identity
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      This policy requires all pods to have SPIRE/SPIFFE identity annotations
+      for Zero Trust mTLS communication.
+spec:
+  validationFailureAction: enforce
+  background: true
+  rules:
+  - name: require-spiffe-identity
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          namespaces:
+          - agi-portal
+          - observability
+    validate:
+      message: "Pod must have SPIFFE identity annotations for Zero Trust"
+      pattern:
+        metadata:
+          annotations:
+            spiffe.io/spiffe-id: "?*"
+            spire.io/workload-selector: "?*"
+  - name: require-spire-agent-socket
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          namespaces:
+          - agi-portal
+          - observability
+    validate:
+      message: "Pod must mount SPIRE agent socket for identity attestation"
+      pattern:
+        spec:
+          volumes:
+          - name: spire-agent-socket
+            hostPath:
+              path: /run/spire/sockets
+              type: Directory
+          containers:
+          - volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+              readOnly: true

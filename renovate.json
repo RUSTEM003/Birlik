@@ -1,0 +1,41 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    "security:openssf-scorecard"
+  ],
+  "schedule": ["before 6am on monday"],
+  "timezone": "UTC",
+  "assignees": ["RUSTEM003"],
+  "reviewers": ["RUSTEM003"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["^@openzeppelin/"],
+      "groupName": "OpenZeppelin packages",
+      "schedule": ["before 6am on monday"]
+    },
+    {
+      "matchPackagePatterns": ["^@nomicfoundation/"],
+      "groupName": "Hardhat packages",
+      "schedule": ["before 6am on monday"]
+    },
+    {
+      "matchDatasources": ["terraform-provider"],
+      "groupName": "Terraform providers",
+      "schedule": ["before 6am on monday"]
+    },
+    {
+      "matchDatasources": ["terraform-module"],
+      "groupName": "Terraform modules",
+      "schedule": ["before 6am on monday"]
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true
+  },
+  "osvVulnerabilityAlerts": true,
+  "commitMessagePrefix": "deps: ",
+  "prTitle": "deps: {{depName}} {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}",
+  "prConcurrentLimit": 10,
+  "branchConcurrentLimit": 5
+}

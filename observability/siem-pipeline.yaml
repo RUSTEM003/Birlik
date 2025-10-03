@@ -1,0 +1,269 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: siem
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opensearch
+  namespace: siem
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opensearch
+  template:
+    metadata:
+      labels:
+        app: opensearch
+    spec:
+      containers:
+      - name: opensearch
+        image: opensearchproject/opensearch:2.11.0
+        ports:
+        - containerPort: 9200
+        - containerPort: 9300
+        env:
+        - name: discovery.type
+          value: single-node
+        - name: OPENSEARCH_JAVA_OPTS
+          value: "-Xms512m -Xmx512m"
+        - name: DISABLE_SECURITY_PLUGIN
+          value: "true"
+        volumeMounts:
+        - name: opensearch-data
+          mountPath: /usr/share/opensearch/data
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          readOnlyRootFilesystem: false
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: opensearch-data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opensearch-dashboards
+  namespace: siem
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opensearch-dashboards
+  template:
+    metadata:
+      labels:
+        app: opensearch-dashboards
+    spec:
+      containers:
+      - name: opensearch-dashboards
+        image: opensearchproject/opensearch-dashboards:2.11.0
+        ports:
+        - containerPort: 5601
+        env:
+        - name: OPENSEARCH_HOSTS
+          value: "http://opensearch:9200"
+        - name: DISABLE_SECURITY_DASHBOARDS_PLUGIN
+          value: "true"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash
+  namespace: siem
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+    spec:
+      containers:
+      - name: logstash
+        image: docker.elastic.co/logstash/logstash:8.11.0
+        ports:
+        - containerPort: 5044
+        - containerPort: 9600
+        volumeMounts:
+        - name: logstash-config
+          mountPath: /usr/share/logstash/pipeline
+        - name: logstash-settings
+          mountPath: /usr/share/logstash/config
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: logstash-config
+        configMap:
+          name: logstash-config
+      - name: logstash-settings
+        configMap:
+          name: logstash-settings
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-config
+  namespace: siem
+data:
+  logstash.conf: |
+    input {
+      beats {
+        port => 5044
+      }
+      http {
+        port => 8080
+        codec => json
+      }
+    }
+    
+    filter {
+      if [kubernetes] {
+        mutate {
+          add_field => { "log_source" => "kubernetes" }
+        }
+      }
+      
+      if [aws] {
+        mutate {
+          add_field => { "log_source" => "aws" }
+        }
+      }
+      
+      if [eventSource] {
+        mutate {
+          add_field => { "log_type" => "cloudtrail" }
+        }
+      }
+      
+      if [httpRequest] {
+        mutate {
+          add_field => { "log_type" => "waf" }
+        }
+      }
+      
+      if [rule] {
+        mutate {
+          add_field => { "log_type" => "falco" }
+          add_field => { "security_alert" => "true" }
+        }
+      }
+      
+      date {
+        match => [ "timestamp", "ISO8601" ]
+      }
+    }
+    
+    output {
+      opensearch {
+        hosts => ["opensearch:9200"]
+        index => "siem-logs-%{+YYYY.MM.dd}"
+      }
+      
+      if [security_alert] == "true" {
+        opensearch {
+          hosts => ["opensearch:9200"]
+          index => "security-alerts-%{+YYYY.MM.dd}"
+        }
+      }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-settings
+  namespace: siem
+data:
+  logstash.yml: |
+    http.host: "0.0.0.0"
+    path.config: /usr/share/logstash/pipeline
+    pipeline.workers: 2
+    pipeline.batch.size: 125
+    pipeline.batch.delay: 50
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opensearch
+  namespace: siem
+spec:
+  selector:
+    app: opensearch
+  ports:
+  - name: http
+    port: 9200
+    targetPort: 9200
+  - name: transport
+    port: 9300
+    targetPort: 9300
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opensearch-dashboards
+  namespace: siem
+spec:
+  selector:
+    app: opensearch-dashboards
+  ports:
+  - port: 5601
+    targetPort: 5601
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: logstash
+  namespace: siem
+spec:
+  selector:
+    app: logstash
+  ports:
+  - name: beats
+    port: 5044
+    targetPort: 5044
+  - name: http
+    port: 8080
+    targetPort: 8080

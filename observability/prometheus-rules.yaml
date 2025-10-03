@@ -1,0 +1,70 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: agi-portal-rules
+  namespace: observability
+  labels:
+    app: agi-portal
+spec:
+  groups:
+  - name: agi-portal.rules
+    rules:
+    - alert: AGIPortalHighErrorRate
+      expr: |
+        (
+          sum(rate(http_requests_total{job="agi-backend",code=~"5.."}[5m])) /
+          sum(rate(http_requests_total{job="agi-backend"}[5m]))
+        ) > 0.05
+      for: 5m
+      labels:
+        severity: critical
+        service: agi-backend
+      annotations:
+        summary: "AGI Portal has high error rate"
+        description: "Error rate is {{ $value | humanizePercentage }} for the last 5 minutes"
+    
+    - alert: AGIPortalHighLatency
+      expr: |
+        histogram_quantile(0.95,
+          sum(rate(http_request_duration_seconds_bucket{job="agi-backend"}[5m])) by (le)
+        ) > 1
+      for: 5m
+      labels:
+        severity: warning
+        service: agi-backend
+      annotations:
+        summary: "AGI Portal has high latency"
+        description: "95th percentile latency is {{ $value }}s for the last 5 minutes"
+    
+    - alert: AGIPortalSecurityEvent
+      expr: |
+        increase(security_events_total{job="agi-backend",event_type="blocked_request"}[5m]) > 10
+      for: 1m
+      labels:
+        severity: critical
+        service: agi-backend
+      annotations:
+        summary: "AGI Portal security event detected"
+        description: "{{ $value }} blocked requests in the last 5 minutes"
+    
+    - alert: AGIPortalAIGatewayDown
+      expr: |
+        up{job="agi-backend"} == 0
+      for: 1m
+      labels:
+        severity: critical
+        service: agi-backend
+      annotations:
+        summary: "AGI Portal AI Gateway is down"
+        description: "AI Gateway has been down for more than 1 minute"
+    
+    - alert: AGIPortalSecretsRotationFailed
+      expr: |
+        increase(secrets_rotation_failures_total[1h]) > 0
+      for: 1m
+      labels:
+        severity: critical
+        service: secrets-rotation
+      annotations:
+        summary: "AGI Portal secrets rotation failed"
+        description: "Secrets rotation has failed {{ $value }} times in the last hour"

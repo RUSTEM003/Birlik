@@ -2,14 +2,32 @@ from pydantic_settings import BaseSettings
 from typing import Optional, List
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Цифровой банк"
+    PROJECT_NAME: str = "AGI Defense Portal"
     API_V1_STR: str = "/api/v1"
     
     DATABASE_URL: str
     
     SECRET_KEY: str
-    ALGORITHM: str
+    ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
+    
+    ENV: str = "dev"  # dev|prod
+    RATE_LIMIT: str = "60/minute"
+    
+    OIDC_ISSUER: Optional[str] = None
+    OIDC_AUDIENCE: Optional[str] = None
+    OIDC_JWKS_URL: Optional[str] = None
+    
+    MEDIA_BASE_URL: str = "http://localhost:8888"
+    MEDIA_AUTH_TIMEOUT: int = 3600
+    
+    OPENAI_API_KEY: Optional[str] = None
+    ANTHROPIC_API_KEY: Optional[str] = None
+    AI_DEFAULT_PROVIDER: str = "openai"
+    
+    REDIS_URL: Optional[str] = None
+    
+    CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173,https://agi-portal.example.com"
     
     WEB3_PROVIDER_URI: str
     

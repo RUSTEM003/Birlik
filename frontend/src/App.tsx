@@ -12,6 +12,10 @@ const Governance = lazy(() => import("./pages/Governance"));
 const LivePlatform = lazy(() => import("./pages/BirlikLive"));
 const GlobalEconomy = lazy(() => import("./pages/GlobalEconomy"));
 const ARDashboard = lazy(() => import("./pages/ARDashboard"));
+const AGIPortal = lazy(() => import("./pages/AGIPortal"));
+const LiveDemoArena = lazy(() => import("./pages/LiveDemoArena"));
+const EvidenceVault = lazy(() => import("./pages/EvidenceVault"));
+const GoldAnswers = lazy(() => import("./pages/GoldAnswers"));
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const Layout = lazy(() => import("./components/layout/Layout"));
@@ -36,6 +40,10 @@ function App() {
                 <Route path="live-platform" element={<LivePlatform />} />
                 <Route path="global-economy" element={<GlobalEconomy />} />
                 <Route path="ar-dashboard" element={<ARDashboard />} />
+                <Route path="agi-portal" element={<AGIPortal />} />
+                <Route path="live-demos" element={<LiveDemoArena />} />
+                <Route path="evidence-vault" element={<EvidenceVault />} />
+                <Route path="gold-answers" element={<GoldAnswers />} />
               </Route>
             </Routes>
           </Suspense>

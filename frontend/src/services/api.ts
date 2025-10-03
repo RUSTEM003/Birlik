@@ -1,21 +1,53 @@
 import axios from "axios";
+import { tokenValidator } from '../auth/tokenValidator';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 const api = axios.create({
   baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },
+  timeout: 30000,
 });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    const validation = tokenValidator.validateToken(token);
+    if (validation.valid) {
+      config.headers.Authorization = `Bearer ${token}`;
+      
+      if (tokenValidator.isTokenExpiringSoon(token, 5)) {
+        console.warn('Token expiring soon, consider refreshing');
+      }
+    } else {
+      console.error('Invalid token:', validation.error);
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+      return Promise.reject(new Error('Invalid token'));
+    }
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    } else if (error.response?.status === 429) {
+      console.warn('Rate limit exceeded, retrying after delay');
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(api.request(error.config));
+        }, 1000);
+      });
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const login = async (credentials: { username: string; password: string }) => {
   const params = new URLSearchParams();
@@ -142,3 +174,25 @@ export const getQuantumFinancialAdvice = async () => {
   const response = await api.get("/api/quantum/financial-advice");
   return response.data;
 };
+
+export const runSpaceDemo = async () => {
+  const response = await api.post("/api/live-demos/space/lunar-landing");
+  return response.data;
+};
+
+export const runEconomyDemo = async () => {
+  const response = await api.post("/api/live-demos/economy/cbdc-stress");
+  return response.data;
+};
+
+export const runMedicineDemo = async () => {
+  const response = await api.post("/api/live-demos/medicine/drug-discovery");
+  return response.data;
+};
+
+export const runSecurityDemo = async () => {
+  const response = await api.post("/api/live-demos/security/red-team");
+  return response.data;
+};
+
+export default api;

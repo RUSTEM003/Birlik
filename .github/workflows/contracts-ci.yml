@@ -1,0 +1,119 @@
+name: Smart Contracts CI
+
+on:
+  pull_request:
+    paths:
+    - 'contracts/**'
+    - '.github/workflows/contracts-ci.yml'
+  push:
+    branches: [main, develop]
+
+jobs:
+  contracts-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: contracts/package-lock.json
+    
+    - name: Install dependencies
+      run: |
+        cd contracts
+        npm ci
+    
+    - name: Compile contracts
+      run: |
+        cd contracts
+        npx hardhat compile
+    
+    - name: Run tests
+      run: |
+        cd contracts
+        npx hardhat test
+    
+    - name: Run coverage
+      run: |
+        cd contracts
+        npx hardhat coverage
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: contracts/coverage/lcov.info
+        flags: contracts
+
+  security-analysis:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install Slither
+      run: |
+        pip install slither-analyzer
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: contracts/package-lock.json
+    
+    - name: Install dependencies
+      run: |
+        cd contracts
+        npm ci
+    
+    - name: Compile contracts
+      run: |
+        cd contracts
+        npx hardhat compile
+    
+    - name: Run Slither
+      run: |
+        cd contracts
+        slither . --print human-summary
+    
+    - name: Run Mythril (if available)
+      run: |
+        if command -v myth >/dev/null 2>&1; then
+          cd contracts
+          myth analyze contracts/AGIGovernance.sol
+        else
+          echo "Mythril not available, skipping"
+        fi
+      continue-on-error: true
+
+  gas-analysis:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: contracts/package-lock.json
+    
+    - name: Install dependencies
+      run: |
+        cd contracts
+        npm ci
+    
+    - name: Run gas report
+      run: |
+        cd contracts
+        REPORT_GAS=true npx hardhat test

@@ -1,0 +1,45 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: agi-portal
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "agi-portal.labels" . | nindent 4 }}
+  annotations:
+    {{- if .Values.ingress.useALB }}
+    kubernetes.io/ingress.class: {{ .Values.ingress.className }}
+    {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+    {{- if .Values.ingress.wafArn }}
+    alb.ingress.kubernetes.io/wafv2-acl-arn: {{ .Values.ingress.wafArn }}
+    {{- end }}
+    {{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  tls:
+  - hosts:
+    - {{ .Values.global.domain }}
+    secretName: agi-portal-tls
+  rules:
+  - host: {{ .Values.global.domain }}
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: agi-backend
+            port:
+              number: {{ .Values.service.backend.port }}
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: agi-frontend
+            port:
+              number: {{ .Values.service.frontend.port }}
+{{- end }}

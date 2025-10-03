@@ -1,0 +1,290 @@
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'WAF Baseline for AGI Portal with managed rules and rate limiting'
+
+Parameters:
+  ClusterName:
+    Type: String
+    Default: agi-portal
+    Description: Name of the EKS cluster
+  
+  Environment:
+    Type: String
+    Default: production
+    Description: Environment name
+  
+  LoggingBucket:
+    Type: String
+    Description: S3 bucket for WAF logs
+    Default: ""
+
+Resources:
+  WebACL:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: !Sub "${ClusterName}-waf"
+      Scope: REGIONAL
+      DefaultAction:
+        Allow: {}
+      Rules:
+        - Name: AWSManagedRulesCommonRuleSet
+          Priority: 1
+          OverrideAction:
+            None: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesCommonRuleSet
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: CommonRuleSetMetric
+        
+        - Name: AWSManagedRulesKnownBadInputsRuleSet
+          Priority: 2
+          OverrideAction:
+            None: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesKnownBadInputsRuleSet
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: KnownBadInputsMetric
+        
+        - Name: AWSManagedRulesSQLiRuleSet
+          Priority: 3
+          OverrideAction:
+            None: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesSQLiRuleSet
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: SQLiRuleSetMetric
+        
+        - Name: AWSManagedRulesBotControlRuleSet
+          Priority: 4
+          OverrideAction:
+            None: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesBotControlRuleSet
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: BotControlMetric
+        
+        - Name: AWSManagedRulesAnonymousIpList
+          Priority: 5
+          OverrideAction:
+            None: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesAnonymousIpList
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AnonymousIpMetric
+        
+        - Name: RateLimitAPIEndpoints
+          Priority: 10
+          Action:
+            Block: {}
+          Statement:
+            RateBasedStatement:
+              Limit: 100
+              AggregateKeyType: IP
+              ScopeDownStatement:
+                ByteMatchStatement:
+                  SearchString: "/api/"
+                  FieldToMatch:
+                    UriPath: {}
+                  TextTransformations:
+                    - Priority: 0
+                      Type: LOWERCASE
+                  PositionalConstraint: CONTAINS
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: RateLimitAPIMetric
+        
+        - Name: RateLimitAIEndpoints
+          Priority: 11
+          Action:
+            Block: {}
+          Statement:
+            RateBasedStatement:
+              Limit: 60
+              AggregateKeyType: IP
+              ScopeDownStatement:
+                ByteMatchStatement:
+                  SearchString: "/api/ai/"
+                  FieldToMatch:
+                    UriPath: {}
+                  TextTransformations:
+                    - Priority: 0
+                      Type: LOWERCASE
+                  PositionalConstraint: CONTAINS
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: RateLimitAIMetric
+      
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: !Sub "${ClusterName}WebACL"
+      
+      Tags:
+        - Key: Name
+          Value: !Sub "${ClusterName}-waf"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: AGI-Portal
+
+  WAFLogDeliveryStream:
+    Type: AWS::KinesisFirehose::DeliveryStream
+    Condition: HasLoggingBucket
+    Properties:
+      DeliveryStreamName: !Sub "aws-waf-logs-${ClusterName}"
+      DeliveryStreamType: DirectPut
+      S3DestinationConfiguration:
+        BucketARN: !Sub "arn:aws:s3:::${LoggingBucket}"
+        Prefix: "waf-logs/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/hour=!{timestamp:HH}/"
+        ErrorOutputPrefix: "waf-logs-errors/"
+        BufferingHints:
+          SizeInMBs: 5
+          IntervalInSeconds: 300
+        CompressionFormat: GZIP
+        RoleARN: !GetAtt FirehoseDeliveryRole.Arn
+        ProcessingConfiguration:
+          Enabled: true
+          Processors:
+            - Type: Lambda
+              Parameters:
+                - ParameterName: LambdaArn
+                  ParameterValue: !GetAtt WAFLogProcessor.Arn
+
+  FirehoseDeliveryRole:
+    Type: AWS::IAM::Role
+    Condition: HasLoggingBucket
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: firehose.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: FirehoseDeliveryPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:AbortMultipartUpload
+                  - s3:GetBucketLocation
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - s3:ListBucketMultipartUploads
+                  - s3:PutObject
+                Resource:
+                  - !Sub "arn:aws:s3:::${LoggingBucket}"
+                  - !Sub "arn:aws:s3:::${LoggingBucket}/*"
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                  - lambda:GetFunctionConfiguration
+                Resource: !GetAtt WAFLogProcessor.Arn
+
+  WAFLogProcessor:
+    Type: AWS::Lambda::Function
+    Condition: HasLoggingBucket
+    Properties:
+      FunctionName: !Sub "${ClusterName}-waf-log-processor"
+      Runtime: python3.9
+      Handler: index.lambda_handler
+      Role: !GetAtt WAFLogProcessorRole.Arn
+      Code:
+        ZipFile: |
+          import json
+          import base64
+          import gzip
+          
+          def lambda_handler(event, context):
+              output = []
+              
+              for record in event['records']:
+                  payload = base64.b64decode(record['data'])
+                  data = json.loads(payload)
+                  
+                  data['timestamp'] = data.get('timestamp', 0)
+                  
+                  output_record = {
+                      'recordId': record['recordId'],
+                      'result': 'Ok',
+                      'data': base64.b64encode(
+                          json.dumps(data).encode('utf-8')
+                      ).decode('utf-8')
+                  }
+                  output.append(output_record)
+              
+              return {'records': output}
+
+  WAFLogProcessorRole:
+    Type: AWS::IAM::Role
+    Condition: HasLoggingBucket
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  WAFLoggingConfiguration:
+    Type: AWS::WAFv2::LoggingConfiguration
+    Condition: HasLoggingBucket
+    Properties:
+      ResourceArn: !GetAtt WebACL.Arn
+      LogDestinationConfigs:
+        - !GetAtt WAFLogDeliveryStream.Arn
+      RedactedFields:
+        - SingleHeader:
+            Name: authorization
+        - SingleHeader:
+            Name: cookie
+
+Conditions:
+  HasLoggingBucket: !Not [!Equals [!Ref LoggingBucket, ""]]
+
+Outputs:
+  WebACLArn:
+    Description: ARN of the WAF Web ACL
+    Value: !GetAtt WebACL.Arn
+    Export:
+      Name: !Sub "${ClusterName}-waf-arn"
+  
+  WebACLId:
+    Description: ID of the WAF Web ACL
+    Value: !Ref WebACL
+    Export:
+      Name: !Sub "${ClusterName}-waf-id"
+  
+  FirehoseDeliveryStreamArn:
+    Condition: HasLoggingBucket
+    Description: ARN of the Kinesis Firehose delivery stream
+    Value: !GetAtt WAFLogDeliveryStream.Arn
+    Export:
+      Name: !Sub "${ClusterName}-waf-firehose-arn"

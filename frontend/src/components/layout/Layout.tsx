@@ -93,6 +93,38 @@ export default function Layout() {
                 <span className="ml-2">{t('arFinancialDashboard')}</span>
               </Link>
             </li>
+            <li>
+              <Link
+                to="/agi-portal"
+                className="flex items-center px-6 py-3 text-white hover:bg-kazakh-blue/30 hover:text-kazakh-gold border-l-4 border-transparent hover:border-kazakh-gold transition-all duration-200"
+              >
+                <span className="ml-2">AGI Defense Portal</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/live-demos"
+                className="flex items-center px-6 py-3 text-white hover:bg-kazakh-blue/30 hover:text-kazakh-gold border-l-4 border-transparent hover:border-kazakh-gold transition-all duration-200"
+              >
+                <span className="ml-2">Live Demo Arena</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/evidence-vault"
+                className="flex items-center px-6 py-3 text-white hover:bg-kazakh-blue/30 hover:text-kazakh-gold border-l-4 border-transparent hover:border-kazakh-gold transition-all duration-200"
+              >
+                <span className="ml-2">Evidence Vault</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/gold-answers"
+                className="flex items-center px-6 py-3 text-white hover:bg-kazakh-blue/30 hover:text-kazakh-gold border-l-4 border-transparent hover:border-kazakh-gold transition-all duration-200"
+              >
+                <span className="ml-2">Gold-Answer Library</span>
+              </Link>
+            </li>
           </ul>
         </nav>
         

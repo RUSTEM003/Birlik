@@ -1,0 +1,43 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: deny-egress-by-default
+  annotations:
+    policies.kyverno.io/title: Deny Egress by Default
+    policies.kyverno.io/category: Network Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: NetworkPolicy
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/description: >-
+      This policy ensures that all namespaces have a default deny egress NetworkPolicy
+      to implement zero-trust networking. Egress must be explicitly allowed.
+spec:
+  validationFailureAction: enforce
+  background: true
+  rules:
+    - name: require-deny-egress-netpol
+      match:
+        any:
+        - resources:
+            kinds:
+            - Namespace
+      exclude:
+        any:
+        - resources:
+            namespaces:
+            - kube-system
+            - kube-public
+            - kube-node-lease
+            - default
+      generate:
+        synchronize: true
+        apiVersion: networking.k8s.io/v1
+        kind: NetworkPolicy
+        name: deny-egress-default
+        namespace: "{{request.object.metadata.name}}"
+        data:
+          spec:
+            podSelector: {}
+            policyTypes:
+            - Egress
+            egress: []

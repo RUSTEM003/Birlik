@@ -1,0 +1,126 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agi-backend
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "agi-portal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: backend
+spec:
+  replicas: {{ .Values.replicaCount.backend }}
+  selector:
+    matchLabels:
+      {{- include "agi-portal.selectorLabels" . | nindent 6 }}
+      app: agi-backend
+  template:
+    metadata:
+      labels:
+        {{- include "agi-portal.selectorLabels" . | nindent 8 }}
+        app: agi-backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: agi-backend
+      securityContext:
+        {{- toYaml .Values.securityContext | nindent 8 }}
+      {{- with .Values.nodeAffinity }}
+      affinity:
+        nodeAffinity:
+          {{- toYaml . | nindent 10 }}
+        {{- with $.Values.podAntiAffinity }}
+        podAntiAffinity:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: backend
+        image: "{{ .Values.image.backend.repository }}:{{ .Values.image.backend.tag }}"
+        imagePullPolicy: {{ .Values.image.backend.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: 8000
+          protocol: TCP
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 10 }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.healthChecks.backend.readiness.path }}
+            port: {{ .Values.healthChecks.backend.readiness.port }}
+          initialDelaySeconds: {{ .Values.healthChecks.backend.readiness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.healthChecks.backend.readiness.periodSeconds }}
+          timeoutSeconds: {{ .Values.healthChecks.backend.readiness.timeoutSeconds }}
+          failureThreshold: {{ .Values.healthChecks.backend.readiness.failureThreshold }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.healthChecks.backend.liveness.path }}
+            port: {{ .Values.healthChecks.backend.liveness.port }}
+          initialDelaySeconds: {{ .Values.healthChecks.backend.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.healthChecks.backend.liveness.periodSeconds }}
+          timeoutSeconds: {{ .Values.healthChecks.backend.liveness.timeoutSeconds }}
+          failureThreshold: {{ .Values.healthChecks.backend.liveness.failureThreshold }}
+        resources:
+          {{- toYaml .Values.resources.backend | nindent 10 }}
+        env:
+        - name: ENV
+          value: "prod"
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: agi-secrets
+              key: BACKEND_SECRET
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: agi-secrets
+              key: DATABASE_URL
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: agi-secrets
+              key: REDIS_URL
+        - name: OIDC_ISSUER
+          valueFrom:
+            secretKeyRef:
+              name: agi-oidc-config
+              key: issuer
+        - name: OIDC_AUDIENCE
+          valueFrom:
+            secretKeyRef:
+              name: agi-oidc-config
+              key: audience
+        - name: OIDC_JWKS_URL
+          valueFrom:
+            secretKeyRef:
+              name: agi-oidc-config
+              key: jwks_url
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: agi-ai-providers
+              key: openai_api_key
+        - name: ANTHROPIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: agi-ai-providers
+              key: anthropic_api_key
+        - name: AI_DEFAULT_PROVIDER
+          valueFrom:
+            secretKeyRef:
+              name: agi-ai-providers
+              key: default_provider
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: var-run
+          mountPath: /var/run
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: var-run
+        emptyDir: {}
